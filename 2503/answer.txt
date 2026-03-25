@@ -1,0 +1,41 @@
+Câu,Đ/A,Giải thích ngắn gọn
+1,B,& dùng để lấy địa chỉ (Address-of operator).
+2,C,*p = 10 khi p chưa trỏ vào vùng nhớ hợp lệ sẽ gây lỗi Runtime (Access Violation).
+3,C,"Trên hệ 64-bit, mọi con trỏ đều chiếm 8 byte để quản lý không gian địa chỉ rộng lớn."
+4,B,*p chính là a. *p = *p + 5 tương đương a = a + 5.
+5,C,"void* là con trỏ đa năng, nhưng không biết kiểu dữ liệu nên không thể lấy giá trị (*p) nếu không ép kiểu."
+6,C,"calloc khởi tạo vùng nhớ bằng 0, malloc giữ giá trị rác."
+7,B,"free giải phóng vùng nhớ nhưng không xóa giá trị trong p, p trở thành con trỏ ""lơ lửng""."
+8,A,"new là toán tử của C++, tích hợp gọi Constructor cho Object."
+9,D,a[i] hoàn toàn tương đương với *(a+i) và con trỏ p trỏ vào a nên p[i] cũng vậy.
+10,B,Mất dấu vùng nhớ cấp phát động mà chưa giải phóng gọi là rò rỉ bộ nhớ.
+11,C,Dùng new[] thì phải dùng delete[].
+12,A,Dangling pointer trỏ vào vùng nhớ không còn thuộc quyền quản lý của chương trình.
+13,C,"Không ai nhân địa chỉ ô nhớ với nhau cả, phép toán này vô nghĩa."
+14,B,"Read-only data. Bạn có thể cho p trỏ đi chỗ khác, nhưng không thể đổi giá trị tại đó qua p."
+15,B,"Read-only pointer. Địa chỉ trong p là cố định, nhưng giá trị tại địa chỉ đó có thể đổi."
+16,B,Con trỏ cấp 2 (Pointer to pointer).
+17,B,"Muốn đổi giá trị của int, truyền int*. Muốn đổi giá trị của int*, truyền int**."
+18,C,Dùng khi mảng động cũ bị thiếu hoặc thừa chỗ.
+19,B,"p trỏ sang b, lệnh *p = 20 làm b thay đổi. a vẫn giữ nguyên là 5."
+20,C,"Tiêu chuẩn C quy định free(NULL) không làm gì cả, rất an toàn."
+21,A,"*(p++) lấy giá trị tại p trước (10), rồi mới tăng p lên trỏ vào 20."
+22,B,**pp truy cập thẳng vào biến a.
+23,B,"char *s chỉ là con trỏ, chưa trỏ vào vùng nhớ nào mà strcpy vào đó là ""sập"" ngay."
+24,C,Trình biên dịch sẽ báo lỗi vì không biết p trỏ vào kiểu gì để lấy bao nhiêu byte dữ liệu.
+25,C,"p trỏ vào a[2], nên p[1] là phần tử kế tiếp a[3] (giá trị 4)."
+26,B,(*p)++ tương đương a++.
+27,C,"Truy cập vùng nhớ sau khi free là cực kỳ nguy hiểm, kết quả hên xui."
+28,C,"Tên mảng 2 chiều là con trỏ trỏ tới ""dòng"" đầu tiên (mỗi dòng là mảng 1 chiều)."
+29,B,"Chuỗi ""DUT"" gồm 'D', 'U', 'T', '\0'. Tổng là 4 byte."
+30,A,"p1 trỏ sang b, nên *p1=30 làm b=30. a vẫn là 10."
+31,B,Dùng dấu chấm . cho biến struct thông thường.
+32,D,Cả hai đều là cách truy cập qua con trỏ (mũi tên là cách viết tắt).
+33,B,"Union dùng chung địa chỉ đầu cho mọi thành phần, kích thước bằng thành phần lớn nhất."
+34,B,CPU truy cập dữ liệu hiệu quả hơn khi chúng nằm ở các địa chỉ chia hết cho 4 hoặc 8.
+35,B,"Giúp code ngắn gọn hơn, ví dụ typedef struct SinhVien SV;."
+36,A,C cho phép gán trực tiếp 2 struct cùng kiểu.
+37,B,"Nếu chứa chính nó, kích thước sẽ là vô hạn. Phải dùng con trỏ để có kích thước cố định."
+38,B,"Truyền con trỏ chỉ tốn 8 byte, truyền tham trị tốn dung lượng bằng cả struct đó."
+39,B,Cú pháp mảng thông thường.
+40,B,"Đây là ""sợi dây"" liên kết các Node lại với nhau."

@@ -1,0 +1,288 @@
+PHẦN 1: CON TRỎ CƠ BẢN VÀ CẤP PHÁT BỘ NHỚ (20 CÂU)
+Câu 1: Trong ngôn ngữ C, toán tử nào dùng để lấy địa chỉ của một biến?
+A. *
+B. &
+C. ->
+D. @
+
+Câu 2: Cho khai báo int *p;. Lệnh nào sau đây là sai?
+A. p = NULL;
+B. int a = 5; p = &a;
+C. *p = 10; (khi p chưa trỏ vào đâu)
+D. p = 0;
+
+Câu 3: Kích thước của một biến con trỏ (ví dụ int *p) trên hệ điều hành 64-bit thường là bao nhiêu byte?
+A. 2 byte
+B. 4 byte
+C. 8 byte
+D. Tùy thuộc vào kiểu dữ liệu mà nó trỏ tới (int, char, double...)
+
+Câu 4: Cho đoạn code: int a = 10; int *p = &a; *p = *p + 5;. Giá trị của a sau lệnh này là:
+A. 10
+B. 15
+C. Địa chỉ của a
+D. Lỗi biên dịch
+
+Câu 5: Con trỏ void* có đặc điểm gì?
+A. Không thể trỏ đến bất kỳ kiểu dữ liệu nào.
+B. Chỉ trỏ được đến kiểu void.
+C. Có thể trỏ đến bất kỳ kiểu dữ liệu nào nhưng cần ép kiểu khi truy xuất giá trị.
+D. Là con trỏ luôn có giá trị NULL.
+
+Câu 6: Lệnh cấp phát động nào trong C dùng để cấp phát bộ nhớ và tự động khởi tạo các ô nhớ bằng 0?
+A. malloc()
+B. realloc()
+C. calloc()
+D. new
+
+Câu 7: Sau khi dùng free(p);, con trỏ p sẽ trở thành:
+A. Con trỏ NULL.
+B. Con trỏ rác (Dangling pointer).
+C. Bị xóa khỏi bộ nhớ stack.
+D. Vẫn trỏ vào vùng nhớ cũ và dữ liệu không đổi.
+
+Câu 8: Trong C++, sự khác biệt chính giữa malloc và new là gì?
+A. new gọi hàm khởi tạo (constructor), malloc thì không.
+B. malloc nhanh hơn new.
+C. new chỉ dùng được cho mảng.
+D. Không có sự khác biệt.
+
+Câu 9: Cho int a[5] = {1, 2, 3, 4, 5}; int *p = a;. Biểu thức nào sau đây tương đương với a[2]?
+A. *(p + 2)
+B. *p + 2
+C. p[2]
+D. Cả A và C đều đúng.
+
+Câu 10: Lỗi "Memory Leak" xảy ra khi nào?
+A. Truy cập vào vùng nhớ đã bị giải phóng.
+B. Cấp phát bộ nhớ động nhưng không giải phóng sau khi dùng xong.
+C. Khai báo quá nhiều biến cục bộ.
+D. Sử dụng con trỏ chưa khởi tạo.
+
+Câu 11: Cho đoạn code: int *p = new int[10];. Để giải phóng vùng nhớ này, lệnh đúng là:
+A. free(p);
+B. delete p;
+C. delete [] p;
+D. p.release();
+
+Câu 12: "Dangling pointer" là gì?
+A. Con trỏ trỏ tới vùng nhớ đã bị giải phóng hoặc không còn hợp lệ.
+B. Con trỏ có giá trị NULL.
+C. Con trỏ chưa được khai báo.
+D. Con trỏ trỏ tới một con trỏ khác.
+
+Câu 13: Phép toán nào không hợp lệ đối với con trỏ?
+A. Cộng con trỏ với một số nguyên.
+B. Trừ hai con trỏ cùng kiểu.
+C. Nhân hai con trỏ với nhau.
+D. So sánh hai con trỏ.
+
+Câu 14: Khai báo const int *p; có nghĩa là:
+A. Con trỏ p không thể trỏ sang chỗ khác.
+B. Không thể thay đổi giá trị của biến mà p đang trỏ tới thông qua p.
+C. Cả con trỏ và giá trị nó trỏ tới đều là hằng số.
+D. Lỗi cú pháp.
+
+Câu 15: Khai báo int * const p = &a; có nghĩa là:
+A. Giá trị của a không thể thay đổi.
+B. Địa chỉ lưu trong p không thể thay đổi sau khi khởi tạo.
+C. p là hằng số kiểu int.
+D. p có thể trỏ đến bất kỳ đâu.
+
+Câu 16: Cho int **pp;. Biến pp là:
+A. Con trỏ trỏ đến một mảng số nguyên.
+B. Con trỏ trỏ đến một con trỏ kiểu int.
+C. Một mảng hai chiều.
+D. Lỗi khai báo.
+
+Câu 17: Để thay đổi giá trị của một con trỏ bên trong một hàm (truyền tham chiếu cho con trỏ), ta cần truyền vào:
+A. Con trỏ (ví dụ int *p).
+B. Địa chỉ của con trỏ (ví dụ int **p).
+C. Giá trị mà con trỏ trỏ tới.
+D. Không thể thay đổi con trỏ trong hàm.
+
+Câu 18: Lệnh realloc(p, new_size) dùng để làm gì?
+A. Giải phóng vùng nhớ cũ.
+B. Cấp phát một vùng nhớ mới hoàn toàn.
+C. Thay đổi kích thước vùng nhớ đã cấp phát động trước đó.
+D. Sao chép dữ liệu từ con trỏ này sang con trỏ khác.
+
+Câu 19: Cho int a = 5, b = 10; int *p = &a; p = &b; *p = 20;. Sau đoạn code này, giá trị của a và b là:
+A. a=20, b=10
+B. a=5, b=20
+C. a=20, b=20
+D. a=5, b=10
+
+Câu 20: Điều gì xảy ra khi thực hiện lệnh free(NULL);?
+A. Lỗi Runtime.
+B. Lỗi biên dịch.
+C. Không có chuyện gì xảy ra (an toàn).
+D. Treo máy.
+
+PHẦN 2: ĐOẠN CODE VÀ OUTPUT (15 CÂU - CÓ TRƯỜNG HỢP LỖI)
+Câu 21: Output của đoạn code sau là gì?
+
+C
+int a[] = {10, 20, 30};
+int *p = a;
+printf("%d", *(p++));
+A. 10
+B. 20
+C. 11
+D. Lỗi
+
+Câu 22: Output của đoạn code sau là gì?
+
+C
+int a = 5;
+int *p = &a;
+int **pp = &p;
+**pp = 100;
+printf("%d", a);
+A. 5
+B. 100
+C. Địa chỉ của a
+D. Lỗi Runtime
+
+Câu 23: Đoạn code sau bị lỗi gì?
+
+C
+char *s;
+strcpy(s, "DUT");
+printf("%s", s);
+A. Lỗi biên dịch.
+B. Lỗi Runtime (s chưa được cấp phát bộ nhớ để chứa chuỗi).
+C. In ra "DUT".
+D. Lỗi cú pháp hàm strcpy.
+
+Câu 24: Kết quả in ra là gì?
+
+C
+int a = 10;
+void *p = &a;
+printf("%d", *p);
+A. 10
+B. Địa chỉ của a
+C. Lỗi biên dịch (không thể dereference con trỏ void trực tiếp)
+D. 0
+
+Câu 25: Output là gì?
+
+C
+int a[] = {1, 2, 3, 4};
+int *p = a + 2;
+printf("%d", p[1]);
+A. 2
+B. 3
+C. 4
+D. Lỗi truy cập mảng
+
+Câu 26: Đoạn code sau in ra giá trị bao nhiêu?
+
+C
+int a = 7;
+int *p = &a;
+(*p)++;
+printf("%d", a);
+A. 7
+B. 8
+C. Địa chỉ của a tăng lên 1
+D. Lỗi
+
+Câu 27: Output của đoạn code này:
+
+C
+int *p = (int*)malloc(sizeof(int));
+*p = 10;
+free(p);
+printf("%d", *p);
+A. 10
+B. 0
+C. Kết quả không xác định (Undefined Behavior)
+D. Lỗi biên dịch
+
+Câu 28: Cho mảng int a[3][3]. Tên mảng a tương đương với kiểu dữ liệu nào?
+A. int *
+B. int **
+C. int (*)[3] (Con trỏ trỏ tới mảng 3 số nguyên)
+D. int [9]
+
+Câu 29: Lệnh printf("%d", sizeof("DUT")); trả về kết quả nào?
+A. 3
+B. 4 (tính cả ký tự '\0')
+C. 8 (kích thước con trỏ)
+D. 1
+
+Câu 30: Đoạn code sau in ra gì?
+
+C
+int a = 10, b = 20;
+int *p1 = &a, *p2 = &b;
+p1 = p2;
+*p1 = 30;
+printf("%d %d", a, b);
+A. 10 30
+B. 30 20
+C. 30 30
+D. 10 20
+
+PHẦN 3: STRUCT, UNION VÀ QUẢN LÝ DỮ LIỆU (10 CÂU)
+Câu 31: Cho khai báo: struct SinhVien { int id; char name[20]; float gpa; };. Lệnh nào dùng để truy cập thành phần gpa của biến struct SinhVien sv;?
+A. sv->gpa
+B. sv.gpa
+C. sv(gpa)
+D. sv{gpa}
+
+Câu 32: Nếu có con trỏ struct SinhVien *p = &sv;, cách nào sau đây là đúng để truy cập id?
+A. p.id
+B. (*p).id
+C. p->id
+D. Cả B và C đều đúng.
+
+Câu 33: Điểm khác biệt lớn nhất giữa struct và union là gì?
+A. struct không thể chứa mảng.
+B. union tiết kiệm bộ nhớ hơn vì các thành phần dùng chung một vùng nhớ.
+C. struct nhanh hơn union.
+D. Không có sự khác biệt về bộ nhớ.
+
+Câu 34: Cho struct A { char c; int i; };. Tại sao sizeof(struct A) thường là 8 thay vì 5 (trên hệ thống 32/64 bit)?
+A. Do lỗi trình biên dịch.
+B. Do cơ chế căn chỉnh bộ nhớ (Memory Alignment/Padding).
+C. Do int luôn chiếm 7 byte.
+D. Do char chiếm 4 byte.
+
+Câu 35: Từ khóa typedef dùng để làm gì?
+A. Để khai báo một hằng số.
+B. Để định nghĩa một kiểu dữ liệu mới dựa trên kiểu đã có (đặt bí danh).
+C. Để cấp phát bộ nhớ.
+D. Để gộp các file tiêu đề.
+
+Câu 36: Để sao chép toàn bộ dữ liệu từ struct A s1 sang struct A s2, ta có thể dùng:
+A. s2 = s1;
+B. strcpy(s2, s1);
+C. Phải sao chép từng thành phần một.
+D. Dùng vòng lặp for.
+
+Câu 37: Một struct có thể chứa chính nó làm một thành phần hay không?
+A. Có, thoải mái.
+B. Không, trừ khi thành phần đó là một con trỏ trỏ tới kiểu struct đó (Self-referential struct).
+C. Không bao giờ.
+D. Chỉ trong C++, C không làm được.
+
+Câu 38: Khi truyền một struct lớn vào hàm, cách nào tối ưu nhất về hiệu suất?
+A. Truyền tham trị (Pass by value).
+B. Truyền con trỏ (Pass by pointer).
+C. Khai báo struct là biến toàn cục.
+D. Không nên dùng struct trong hàm.
+
+Câu 39: Khai báo nào mô tả một mảng gồm 10 cấu trúc SinhVien?
+A. struct SinhVien[10] list;
+B. struct SinhVien list[10];
+C. list SinhVien[10];
+D. array<SinhVien, 10> list;
+
+Câu 40: Trong struct Node { int data; struct Node *next; };, thành phần next đóng vai trò gì?
+A. Lưu trữ giá trị tiếp theo.
+B. Lưu địa chỉ của Node kế tiếp trong danh sách.
+C. Là một mảng các Node.
+D. Để kết thúc chương trình.
