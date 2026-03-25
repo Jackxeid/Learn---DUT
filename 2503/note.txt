@@ -1,0 +1,26 @@
+Biểu thức,Kết quả in ra,Vị trí con trỏ p sau lệnh
+*(p++),"10 (Lấy giá trị cũ, trỏ tăng sau)",Trỏ vào 20
+*(++p),"20 (Trỏ tăng trước, lấy giá trị mới)",Trỏ vào 20
+(*p)++,"10 (Lấy giá trị 10, sau đó số 10 trong mảng tăng lên 11)",Vẫn trỏ vào ô đầu (giờ là 11)
+++(*p),11 (Số 10 trong mảng tăng lên 11 rồi mới in ra),Vẫn trỏ vào ô đầu (giờ là 11)
+
+===================================================================
+
+In C++, a void pointer is a pointer that is declared using the 'void' keyword (void*).
+
+It is different from regular pointers it is used to point to data of no specified data type.
+It can point to any type of data so it is also called a "Generic Pointer". 
+
+===================================================================
+
+Pointer to an Array int (*ptr)[3];
+
+===================================================================
+
+// Giving the new name to predefined data type
+typedef long long ulli;
+
+// ulli used to make long long variables
+ulli a = 1232133 ;
+cout << a;
+return 0;
