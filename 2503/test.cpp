@@ -4,6 +4,10 @@ using namespace std;
 
 void test(int *p) {
 	*p = 20;
+	cout << "Địa chỉ trong hàm test: " << p << endl;
+
+	delete p; // Giải phóng bộ nhớ đã cấp phát cho p
+	cout << "Địa chỉ trong hàm test: " << p << endl;
 };
 
 int main(){
@@ -13,7 +17,7 @@ int main(){
 			*(ptrA + i) = pow(i, 2);
 		}
 		for (int i = 0; i < 20; i++){
-			cout << "A[" << i << "] = " << ptrA[i] << endl;
+			cout << "A[" << i << "] = " << ptrA[i] << endl; // hoặc *(ptrA + i)
 			cout << "A[" << i << "] = " << A[i] << endl;
 		}
 	
@@ -39,6 +43,7 @@ int main(){
 
 	// TRƯỜNG HỢP B: *ptr = N;
 	cout << "TRƯỜNG HỢP B: *ptr = N:" << endl;
+	ptr = &a;
 	*ptr = N; 
 	cout << "Giá trị của a sau khi *ptr = N: " << a << endl;
 	cout << "Địa chỉ mà ptr đang trỏ tới ptr: " << ptr << endl;
@@ -49,8 +54,8 @@ int main(){
 
 	int *p1 = new int(10);
 	int *p2 = new int[10];
-	cout << *p1 << endl;
-	cout << *p2 << endl;
+	cout << "Địa chỉ của p1: " << p1 << ", Giá trị của p1: " << *p1 << endl;
+	cout << "Địa chỉ của p2: " << p2 << ", Giá trị của p2: " << *p2 << endl;
 
 	test(p1);
 	cout << *p1 << endl;
@@ -58,4 +63,7 @@ int main(){
 	int a1 = 10;
 	void *p = &a1;
 	printf("%d", *(int*)p);
+
+	delete p1; // Giải phóng bộ nhớ đã cấp phát cho p1
+	delete[] p2; // Giải phóng bộ nhớ đã cấp phát cho p2
 }
