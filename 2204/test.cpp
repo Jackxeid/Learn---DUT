@@ -1,10 +1,31 @@
-#include <iostream>
-#include <math.h>
+#include <bits/stdc++.h>
 using namespace std;
 
+class B{
+private:
+	int b;
+public:
+	B(){
+		b = 10;
+	}
+
+	void getB(){
+		cout<<b;
+	}
+	
+	friend class A;
+};
+
+class A{
+public:
+	void print(B arg){
+		cout<<arg.b;
+	}
+};
 int main(){
-	int a = 5;
-	int b = 2;
-	double c = 0.6;
-	cout << 5.0/2.0 << endl;
+	B b;
+	A a;
+	b.getB();
+	b.b = 20;
+return 0;
 }
