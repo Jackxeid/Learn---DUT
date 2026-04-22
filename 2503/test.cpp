@@ -10,6 +10,17 @@ void test(int *p) {
 	cout << "Địa chỉ trong hàm test: " << p << endl;
 };
 
+struct Inside {
+    Inside() { cout << "Inside khoi tao" << endl; }
+    ~Inside() { cout << "Inside bi huy" << endl; }
+};
+
+struct Outside {
+    Inside in; // Thành phần bên trong
+    Outside() { cout << "Outside khoi tao" << endl; }
+    ~Outside() { cout << "Outside bi huy" << endl; }
+};
+
 int main(){
 		int A[20] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 		int *ptrA = A;
@@ -66,4 +77,7 @@ int main(){
 
 	delete p1; // Giải phóng bộ nhớ đã cấp phát cho p1
 	delete[] p2; // Giải phóng bộ nhớ đã cấp phát cho p2
+
+	Outside out;
+	return 0;
 }
