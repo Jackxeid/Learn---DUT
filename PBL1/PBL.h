@@ -82,7 +82,7 @@ private:
     Table* tables;
     int totalTables;
     
-		// Sơ đồ chỗ ngồi
+    // Sơ đồ chỗ ngồi
     static const int ROWS = 5;
     static const int COLS = 5;
     int floorPlan[ROWS][COLS];

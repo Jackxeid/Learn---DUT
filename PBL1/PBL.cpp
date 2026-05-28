@@ -89,7 +89,7 @@ void Table::freeTable() {
 }
 // -----------------------------------------------------------------
 void Table::displayTable() const {
-    cout << "Bàn số: " << setw(5) << tableID << " | Chỗ ngồi: " << setw(5) << capacity 
+    cout << "Bàn số: " << tableID << " | Chỗ ngồi: " << capacity 
 				<< " | Trạng thái: " << (isBooked ? "Đã Đặt" : "Trống") << endl;
     if (isBooked && bookedBy != nullptr) {
         cout << "  -> Khách hàng: ";
@@ -128,13 +128,12 @@ void RestaurantManager::displayFloorPlan() {
     cout << "\n=== SƠ ĐỒ NHÀ HÀNG ===\n";
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
-						int id = floorPlan[i][j] - 1;
-						
-						if (tables[id].getStatus()) {
-							cout << "[ X ] ";
-						} else {
-							cout << "[ " << floorPlan[i][j] << " ] ";
-						}
+            if (floorPlan[i][j] == 0) cout << "[   ] ";
+            else {
+                int id = floorPlan[i][j] - 1;
+                if (tables[id].getStatus()) cout << "[ X ] ";
+                else cout << "[ " << floorPlan[i][j] << " ] ";
+            }
         }
         cout << endl;
     }
@@ -143,53 +142,55 @@ void RestaurantManager::displayFloorPlan() {
 void RestaurantManager::addReservation() {
     int tableID;
     string name, phone;
-    cout << "\n--- THEM DAT BAN ---" << endl;
+    cout << "\n--- ĐẶT BÀN ---" << endl;
     displayFloorPlan();
 		cout << "Chú thích:\n"
 		<< "- [ id ] = Bàn trống\n"
 		<< "- [ X ] = Bàn đã đặt\n"
 		<< "- [   ] = Lối đi\n";
 
-    cout << "Nhap ID ban: "; cin >> tableID;
+    cout << "Nhập ID bàn: "; cin >> tableID;
     if (tableID < 1 || tableID > totalTables || tables[tableID - 1].getStatus()) {
-        cout << "Khong hop le hoac ban da bi dat!\n"; return;
+        cout << "Không hợp lệ hoặc bàn đã bị đặt!\n"; return;
     }
     cin.ignore();
-    cout << "Ten khach: "; getline(cin, name);
+    cout << "Tên: "; getline(cin, name);
     cout << "SDT: "; getline(cin, phone);
     Customer newCust(name, phone);
     tables[tableID - 1].bookTable(&newCust);
-    cout << "=> DAT BAN THANH CONG!\n";
+    cout << "=> ĐẶT BÀN THÀNH CÔNG!\n";
 }
 // -----------------------------------------------------------------
 void RestaurantManager::deleteReservation() {
     int tableID;
-    cout << "\n--- HUY DAT BAN ---" << endl;
-    cout << "Nhap ID ban can huy: "; cin >> tableID;
+    cout << "\n--- HỦY ĐẶT BÀN ---" << endl;
+    displayFloorPlan();
+    cout << "Nhập ID bàn cần hủy: "; cin >> tableID;
     if (tableID < 1 || tableID > totalTables || !tables[tableID - 1].getStatus()) {
-        cout << "ID khong hop le hoac ban dang trong!\n"; return;
+        cout << "ID không hợp lệ hoặc bàn đang trống!\n"; return;
     }
     tables[tableID - 1].freeTable();
-    cout << "=> HUY DAT BAN THANH CONG!\n";
+    cout << "=> HỦY ĐẶT BÀN THÀNH CÔNG!\n";
 }
 // -----------------------------------------------------------------
 void RestaurantManager::editReservation() {
     int tableID;
-    cout << "\n--- SUA THONG TIN DAT BAN ---" << endl;
-    cout << "Nhap ID ban: "; cin >> tableID;
+    cout << "\n--- SỬA THÔNG TIN ĐẶT BÀN ---" << endl;
+    displayFloorPlan();
+    cout << "Nhập ID bàn: "; cin >> tableID;
     if (tableID < 1 || tableID > totalTables || !tables[tableID - 1].getStatus()) {
-        cout << "Khong hop le!\n"; return;
+        cout << "ID không hợp lệ!\n"; return;
     }
     string newName, newPhone;
     cin.ignore();
-    cout << "Ten moi: "; getline(cin, newName);
-    cout << "SDT moi: "; getline(cin, newPhone);
+    cout << "Tên:"; getline(cin, newName);
+    cout << "SDT: "; getline(cin, newPhone);
     tables[tableID - 1].getCustomer()->updateInfo(newName, newPhone);
-    cout << "=> CAP NHAT THANH CONG!\n";
+    cout << "=> CẬP NHẬT THÔNG TIN THÀNH CÔNG!\n";
 }
 // -----------------------------------------------------------------
 void RestaurantManager::displayAllTables() {
-    cout << "\n=== DANH SACH TRANG THAI BAN ===\n";
+    cout << "\n=== DANH SÁCH TẤT CẢ CÁC BÀN ===\n";
     for (int i = 0; i < totalTables; i++) tables[i].displayTable();
 }
 // -----------------------------------------------------------------
@@ -229,7 +230,7 @@ void showMenu() {
 
 // ================================ HÀM ĐIỀU HƯỚNG MAIN ================================
 int main() {
-    RestaurantManager bkRestaurant(12);
+    RestaurantManager bkRestaurant(13);
     int choice;
     do {
         showMenu();
@@ -240,6 +241,7 @@ int main() {
         else if (choice == 4) bkRestaurant.deleteReservation();
         else if (choice == 5) bkRestaurant.editReservation();
         else if (choice == 6) bkRestaurant.saveToFile("Data.txt");
+        cout << "\n#######################################################\n";
     } while (choice != 0);
     return 0;
 }
