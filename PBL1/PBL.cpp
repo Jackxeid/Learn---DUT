@@ -30,7 +30,7 @@ Customer::Customer(string n, string p) : Person(n, p) {
 Customer::~Customer() {}
 // -----------------------------------------------------------------
 void Customer::displayInfo() const {
-    cout << left << setw(10) << customerID << setw(20) << name << setw(15) << phone;
+    cout << left << setw(5) << customerID << " | Tên: " << setw(20) << name << " | SDT: " << setw(15) << phone;
 }
 int Customer::getID() const { return customerID; }
 // -----------------------------------------------------------------
@@ -89,10 +89,10 @@ void Table::freeTable() {
 }
 // -----------------------------------------------------------------
 void Table::displayTable() const {
-    cout << "Bàn số: " << tableID << " | Chỗ ngồi: " << capacity 
+    cout << "Bàn số: " << setw(3) << tableID << " | Chỗ ngồi: " << setw(3) << capacity 
 				<< " | Trạng thái: " << (isBooked ? "Đã Đặt" : "Trống") << endl;
     if (isBooked && bookedBy != nullptr) {
-        cout << "  -> Khách hàng: ";
+        cout << "-> ID: ";
         bookedBy->displayInfo();
         cout << endl;
     }
@@ -144,7 +144,7 @@ void RestaurantManager::addReservation() {
     string name, phone;
     cout << "\n--- ĐẶT BÀN ---" << endl;
     displayFloorPlan();
-		cout << "Chú thích:\n"
+		cout << "\nChú thích:\n"
 		<< "- [ id ] = Bàn trống\n"
 		<< "- [ X ] = Bàn đã đặt\n"
 		<< "- [   ] = Lối đi\n";
@@ -179,7 +179,7 @@ void RestaurantManager::editReservation() {
     displayFloorPlan();
     cout << "Nhập ID bàn: "; cin >> tableID;
     if (tableID < 1 || tableID > totalTables || !tables[tableID - 1].getStatus()) {
-        cout << "ID không hợp lệ!\n"; return;
+        cout << "ID không hợp lệ hoặc bàn đang trống!\n"; return;
     }
     string newName, newPhone;
     cin.ignore();
@@ -205,7 +205,7 @@ void RestaurantManager::saveToFile(const string& filename) {
         }
     }
     outFile.close();
-    cout << "=> DA LUU FILE!\n";
+    cout << "=> ĐÃ LƯU DỮ LIỆU!\n";
 }
 
 
