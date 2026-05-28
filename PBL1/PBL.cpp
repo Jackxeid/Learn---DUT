@@ -89,10 +89,10 @@ void Table::freeTable() {
 }
 // -----------------------------------------------------------------
 void Table::displayTable() const {
-    cout << "Ban so: " << setw(5) << tableID << " | Cho ngoi: " << setw(5) << capacity 
-				<< " | Trang thai: " << (isBooked ? "Da Dat" : "Trong") << endl;
+    cout << "Bàn số: " << setw(5) << tableID << " | Chỗ ngồi: " << setw(5) << capacity 
+				<< " | Trạng thái: " << (isBooked ? "Đã Đặt" : "Trống") << endl;
     if (isBooked && bookedBy != nullptr) {
-        cout << "  -> Khach hang: ";
+        cout << "  -> Khách hàng: ";
         bookedBy->displayInfo();
         cout << endl;
     }
@@ -119,11 +119,13 @@ RestaurantManager::RestaurantManager(int numTables) {
         }
     }
 }
+// -----------------------------------------------------------------
 RestaurantManager::~RestaurantManager() {
     delete[] tables;
 }
+// -----------------------------------------------------------------
 void RestaurantManager::displayFloorPlan() {
-    cout << "\n=== SO DO NHA HANG (MANG 2 CHIEU) ===\n";
+    cout << "\n=== SƠ ĐỒ NHÀ HÀNG ===\n";
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (floorPlan[i][j] == 0) cout << "[   ] ";
@@ -136,6 +138,7 @@ void RestaurantManager::displayFloorPlan() {
         cout << endl;
     }
 }
+// -----------------------------------------------------------------
 void RestaurantManager::addReservation() {
     int tableID;
     string name, phone;
@@ -152,6 +155,7 @@ void RestaurantManager::addReservation() {
     tables[tableID - 1].bookTable(&newCust);
     cout << "=> DAT BAN THANH CONG!\n";
 }
+// -----------------------------------------------------------------
 void RestaurantManager::deleteReservation() {
     int tableID;
     cout << "\n--- HUY DAT BAN ---" << endl;
@@ -162,6 +166,7 @@ void RestaurantManager::deleteReservation() {
     tables[tableID - 1].freeTable();
     cout << "=> HUY DAT BAN THANH CONG!\n";
 }
+// -----------------------------------------------------------------
 void RestaurantManager::editReservation() {
     int tableID;
     cout << "\n--- SUA THONG TIN DAT BAN ---" << endl;
@@ -176,10 +181,12 @@ void RestaurantManager::editReservation() {
     tables[tableID - 1].getCustomer()->updateInfo(newName, newPhone);
     cout << "=> CAP NHAT THANH CONG!\n";
 }
+// -----------------------------------------------------------------
 void RestaurantManager::displayAllTables() {
     cout << "\n=== DANH SACH TRANG THAI BAN ===\n";
     for (int i = 0; i < totalTables; i++) tables[i].displayTable();
 }
+// -----------------------------------------------------------------
 void RestaurantManager::saveToFile(const string& filename) {
     ofstream outFile(filename);
     if (!outFile) return;
@@ -193,6 +200,8 @@ void RestaurantManager::saveToFile(const string& filename) {
     outFile.close();
     cout << "=> DA LUU FILE!\n";
 }
+
+
 
 // === HÀM ĐIỀU HƯỚNG MAIN ===
 int main() {

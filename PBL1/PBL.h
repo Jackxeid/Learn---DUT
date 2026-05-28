@@ -75,16 +75,17 @@ public:
 };
 
 // ==========================================
-// 5. LỚP QUẢN LÝ TRUNG TÂM (CORE MANAGER)
+// 5. LỚP QUẢN LÝ NHÀ HÀNG (CORE MANAGER)
 // ==========================================
 class RestaurantManager {
 private:
-    Table* tables; // Con trỏ quản lý mảng động 1 chiều
+    Table* tables;
     int totalTables;
     
+		// Sơ đồ chỗ ngồi
     static const int ROWS = 5;
     static const int COLS = 5;
-    int floorPlan[ROWS][COLS]; // Mảng 2 chiều cố định sơ đồ
+    int floorPlan[ROWS][COLS];
 
 public:
     RestaurantManager(int numTables);
