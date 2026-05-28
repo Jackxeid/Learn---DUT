@@ -128,12 +128,13 @@ void RestaurantManager::displayFloorPlan() {
     cout << "\n=== SƠ ĐỒ NHÀ HÀNG ===\n";
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
-            if (floorPlan[i][j] == 0) cout << "[   ] ";
-            else {
-                int id = floorPlan[i][j] - 1;
-                if (tables[id].getStatus()) cout << "[ X ] ";
-                else cout << "[" << setw(3) << floorPlan[i][j] << "] ";
-            }
+						int id = floorPlan[i][j] - 1;
+						
+						if (tables[id].getStatus()) {
+							cout << "[ X ] ";
+						} else {
+							cout << "[ " << floorPlan[i][j] << " ] ";
+						}
         }
         cout << endl;
     }
@@ -144,6 +145,11 @@ void RestaurantManager::addReservation() {
     string name, phone;
     cout << "\n--- THEM DAT BAN ---" << endl;
     displayFloorPlan();
+		cout << "Chú thích:\n"
+		<< "- [ id ] = Bàn trống\n"
+		<< "- [ X ] = Bàn đã đặt\n"
+		<< "- [   ] = Lối đi\n";
+
     cout << "Nhap ID ban: "; cin >> tableID;
     if (tableID < 1 || tableID > totalTables || tables[tableID - 1].getStatus()) {
         cout << "Khong hop le hoac ban da bi dat!\n"; return;
@@ -203,12 +209,30 @@ void RestaurantManager::saveToFile(const string& filename) {
 
 
 
-// === HÀM ĐIỀU HƯỚNG MAIN ===
+// ================================ SHOW MENU ================================
+void showMenu() {
+    cout << "\n=========================================\n";
+    cout << "     HỆ THỐNG QUẢN LÝ ĐẶT BÀN NHÀ HÀNG   \n";
+    cout << "=========================================\n";
+    cout << "1. Xem sơ đồ nhà hàng\n";
+    cout << "2. Xem danh sách tất cả các bàn\n";
+    cout << "3. Đặt bàn mới\n";
+    cout << "4. Hủy đặt bàn\n";
+    cout << "5. Sửa thông tin khách hàng\n";
+    cout << "6. Lưu dữ liệu (.txt)\n";
+    cout << "0. Thoát chương trình\n";
+    cout << "=========================================\n";
+    cout << "Nhập lựa chọn của bạn: ";
+}
+
+
+
+// ================================ HÀM ĐIỀU HƯỚNG MAIN ================================
 int main() {
     RestaurantManager bkRestaurant(12);
     int choice;
     do {
-        cout << "\n1. Xem so do | 2. Danh sach | 3. Them | 4. Xoa | 5. Sua | 6. Luu file | 0. Thoat\nNhap: ";
+        showMenu();
         cin >> choice;
         if (choice == 1) bkRestaurant.displayFloorPlan();
         else if (choice == 2) bkRestaurant.displayAllTables();
