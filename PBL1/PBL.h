@@ -20,9 +20,9 @@ protected:
     std::string phone;
 public:
     Person(std::string n = "", std::string p = "");
-    virtual ~Person(); // Hàm hủy ảo chống leak bộ nhớ
+    virtual ~Person();
     
-    virtual void displayInfo() const = 0; // Hàm ảo thuần túy (Đa hình)
+    virtual void displayInfo() const = 0;
     
     std::string getName() const;
     std::string getPhone() const;
@@ -34,16 +34,16 @@ public:
 class Customer : public Person {
 private:
     int customerID;
-    static int totalCustomers; // Thành viên tĩnh
+    static int totalCustomers;
 public:
     Customer(std::string n = "", std::string p = "");
     ~Customer();
 
-    void displayInfo() const override; // Ghi đè phương thức ảo
+    void displayInfo() const override;
     int getID() const;
     void updateInfo(std::string n, std::string p);
     
-    static int getTotalCustomers(); // Hàm tĩnh
+    static int getTotalCustomers();
 };
 
 // ==========================================
@@ -54,7 +54,7 @@ private:
     int tableID;
     int capacity;
     bool isBooked;
-    Customer* bookedBy; // Con trỏ quản lý đối tượng động
+    Customer* bookedBy;
     DateTime bookTime;
 
 public:

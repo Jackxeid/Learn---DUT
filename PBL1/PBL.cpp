@@ -2,19 +2,26 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-
 using namespace std;
 
-// === KHỞI TẠO THÀNH VIÊN TĨNH ===
+// ================================ KHỞI TẠO THÀNH VIÊN TĨNH ================================
 int Customer::totalCustomers = 0;
 
-// === ĐỊNH NGHĨA LỚP PERSON ===
-Person::Person(string n, string p) : name(n), phone(p) {}
-Person::~Person() {}
-string Person::getName() const { return name; }
-string Person::getPhone() const { return phone; }
 
-// === ĐỊNH NGHĨA LỚP CUSTOMER ===
+
+// ================================ ĐỊNH NGHĨA LỚP PERSON ================================
+Person::Person(string n, string p) : name(n), phone(p) {}
+// -----------------------------------------------------------------
+Person::~Person() {}
+// -----------------------------------------------------------------
+string Person::getName() const { return name; }
+// -----------------------------------------------------------------
+string Person::getPhone() const { return phone; }
+// -----------------------------------------------------------------
+
+
+
+// ================================ ĐỊNH NGHĨA LỚP CUSTOMER ================================
 Customer::Customer(string n, string p) : Person(n, p) {
     totalCustomers++;
     customerID = totalCustomers;
@@ -23,67 +30,64 @@ Customer::Customer(string n, string p) : Person(n, p) {
 Customer::~Customer() {}
 // -----------------------------------------------------------------
 void Customer::displayInfo() const {
-    cout << "ID: " << customerID << endl
-				<< "Tên: " << name << endl
-				<< "SDT: " << phone << endl;
+    cout << left << setw(10) << customerID << setw(20) << name << setw(15) << phone;
 }
 int Customer::getID() const { return customerID; }
 // -----------------------------------------------------------------
 void Customer::updateInfo(string n, string p) {
     name = n;
     phone = p;
-		cout << "Cập nhật thông tin khách hàng thành công!\n" 
-				<< "ID: " << customerID << endl
-				<< "Tên: " << name << endl
-				<< "SDT: " << phone << endl;
 }
 // -----------------------------------------------------------------
 int Customer::getTotalCustomers() { return totalCustomers; }
 
-// === ĐỊNH NGHĨA LỚP TABLE ===
+
+
+// ================================ ĐỊNH NGHĨA LỚP TABLE ================================
 Table::Table(int id, int cap) : tableID(id), capacity(cap), isBooked(false), bookedBy(nullptr) {}
+// -----------------------------------------------------------------
 Table::~Table() {
     if (bookedBy != nullptr) {
         delete bookedBy;
     }
 }
+// -----------------------------------------------------------------
 int Table::getTableID() const { return tableID; }
+// -----------------------------------------------------------------
 int Table::getCapacity() const { return capacity; }
+// -----------------------------------------------------------------
 bool Table::getStatus() const { return isBooked; }
+// -----------------------------------------------------------------
 Customer* Table::getCustomer() const { return bookedBy; }
-
+// -----------------------------------------------------------------
 bool Table::bookTable(Customer* c) {
     if (isBooked){
-			cout << "Bàn đã bị đặt! Vui lòng chọn bàn khác.\n";
 			return false;
 		}
 
     bookedBy = new Customer(*c);
     isBooked = true;
-		cout << "Đặt bàn thành công!\n";
     return true;
 }
+// -----------------------------------------------------------------
 bool Table::bookTable(Customer* c, DateTime dt) {
     if (isBooked) {
-        cout << "Bàn đã bị đặt! Vui lòng chọn bàn khác.\n";
         return false;
     }
     bookedBy = new Customer(*c);
     isBooked = true;
     bookTime = dt;
-		cout << "Đặt bàn thành công!\n";
     return true;
 }
+// -----------------------------------------------------------------
 void Table::freeTable() {
     if (isBooked) {
         delete bookedBy;
         bookedBy = nullptr;
         isBooked = false;
-				cout << "Hủy đặt bàn thành công!\n";
-		} else {
-				cout << "Bàn đang trống!\n";
-    }
+		}
 }
+// -----------------------------------------------------------------
 void Table::displayTable() const {
     cout << "Ban so: " << setw(5) << tableID << " | Cho ngoi: " << setw(5) << capacity 
 				<< " | Trang thai: " << (isBooked ? "Da Dat" : "Trong") << endl;
@@ -94,7 +98,9 @@ void Table::displayTable() const {
     }
 }
 
-// === ĐỊNH NGHĨA LỚP RESTAURANTMANAGER ===
+
+
+// ================================ ĐỊNH NGHĨA LỚP RESTAURANTMANAGER ================================
 RestaurantManager::RestaurantManager(int numTables) {
     totalTables = numTables;
     tables = new Table[totalTables];
