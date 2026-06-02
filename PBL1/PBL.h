@@ -1,143 +1,143 @@
 #ifndef PBL_H
 #define PBL_H
 
-
 #include <string>
-using namespace std;
+#include <vector>
 
-// ==========================================
-// 1. STRUCT ĐỊNH NGHĨA THỜI GIAN
-// ==========================================
+// ================================ CẤU HÌNH HẰNG SỐ HỆ THỐNG ================================
+const int ROWS = 5; // Số hàng của sơ đồ nhà hàng
+const int COLS = 5; // Số cột của sơ đồ nhà hàng
+
+// Cấu trúc thời gian hỗ trợ tính năng đặt lịch nâng cao
 struct DateTime {
-    int day, month, year;
-    int hour, minute;
+    int hour = 0;
+    int minute = 0;
+    int day = 1;
+    int month = 1;
+    int year = 2026;
 };
 
-// ==========================================
-// 2. LỚP CƠ SỞ TRỪU TƯỢNG (ABSTRACTION)
-// ==========================================
+// ================================ LỚP CƠ SỞ PERSON ================================
 class Person {
-    protected:
-        string name;
-        string phone;
-    public:
-        Person(string n = "", string p = "");
-        virtual ~Person();
+protected:
+    std::string name;
+    std::string phone;
+public:
+    Person(std::string n = "", std::string p = "");
+    virtual ~Person();
+    std::string getName() const;
+    std::string getPhone() const;
+};
 
-        virtual void displayInfo() const = 0;
-
-        string getName() const;
-        string getPhone() const;
-    };
-
-// ==========================================
-// 3. LỚP KHÁCH HÀNG ĐA HÌNH VÀ KẾ THỪA
-// ==========================================
+// ================================ LỚP CON CUSTOMER ================================
 class Customer : public Person {
-    private:
-        int customerID;
-        static int totalCustomers;
-    
-    public:
-        Customer(string n = "", string p = "");
-        ~Customer();
-
-        void displayInfo() const override;
-        int getID() const;
-        void updateInfo(string n, string p);
-
-        static int getTotalCustomers();
-    };
-
-
-class Employee: public Person {
-    private:
-        string empID;
-        string role; // "Manager" hoặc "Staff"
-        double baseSalary;
-        int shifts;
-
-    public:
-        Employee(string id = "", string n = "", string p = "", string r = "Staff", double salary = 0, int s = 0);
-        // Tên, SDT, ID nhân viên, vai trò, lương cơ bản, số ca làm
-        ~Employee();
-
-        // Getters
-        void displayInfo() const override;
-
-        // Setters cho Quản lý
-        void addShift() { shifts++; };
-        void updateSalary(double newSalary) { baseSalary = newSalary; };
-
-        // Tính lương cơ bản
-        double calculatePay() const {
-            double total = baseSalary * shifts;
-            if (role == "Manager") total += 1000000; // Phụ cấp quản lý
-            return total;
-        }
-
-        void displayEmployee() const {
-            cout << left << setw(10) << empID << setw(20) << name 
-                << setw(15) << role << setw(15) << baseSalary 
-                << setw(10) << shifts << endl;
-        }
-
-        // Format chuỗi để ghi vào file
-        string toFileString() const {
-            return empID + "|" + name + "|" + role + "|" + to_string(baseSalary) + "|" + to_string(shifts);
-        }
+private:
+    int customerID;
+    static int totalCustomers; // Biến tĩnh đếm tổng số khách hàng
+public:
+    Customer(std::string n = "", std::string p = "");
+    virtual ~Customer();
+    void displayInfo() const;
+    int getID() const;
+    void updateInfo(std::string n, std::string p);
+    static int getTotalCustomers();
 };
-// ==========================================
-// 4. LỚP ĐỐI TƯỢNG BÀN ĂN (ENCAPSULATION)
-// ==========================================
+
+// ================================ LỚP CON EMPLOYEE ================================
+class Employee : public Person {
+private:
+    std::string empID;
+    std::string role; // "Manager" hoặc "Staff"
+    double baseSalary;
+    int shifts;
+public:
+    Employee(std::string id = "", std::string n = "", std::string p = "", std::string r = "Staff", double salary = 0, int s = 0);
+    virtual ~Employee();
+
+    std::string getID() const;
+    std::string getRole() const;
+    double getBaseSalary() const;
+    int getShifts() const;
+
+    void addShift();
+    void updateSalary(double newSalary);
+    double calculatePay() const;
+    void displayEmployee() const;
+    std::string toFileString() const;
+};
+
+// ================================ LỚP MODULE HRMANAGER ================================
+class HRManager {
+private:
+    std::vector<Employee*> staffList; // Mảng động đa hình quản lý danh sách nhân sự
+    const std::string EMP_FILE = "employees.txt";
+    const std::string PAYROLL_FILE = "payroll_report.txt";
+    std::string trim(const std::string& str); // Hàm chuẩn hóa chuỗi đọc từ file
+public:
+    HRManager();
+    ~HRManager();
+    void loadEmployees();
+    void saveEmployees();
+    void exportPayroll();
+    void displayAllStaff();
+    std::string authenticate(std::string empID);
+    
+    // Các tính năng mở rộng phân quyền Admin
+    void addEmployee();
+    void removeEmployee();
+    void manageSalaryAndShifts();
+    void viewFeedbacks();
+};
+
+// ================================ LỚP ĐỐI TƯỢNG TABLE ================================
 class Table {
-    private:
-        int tableID;
-        int capacity;
-        bool isBooked;
-        Customer* bookedBy;
-        DateTime bookTime;
-
-    public:
-        Table(int id = 0, int cap = 4);
-        ~Table();
-
-        int getTableID() const;
-        int getCapacity() const;
-        bool getStatus() const;
-        Customer* getCustomer() const;
-
-        // Nạp chồng hàm (Function Overloading)
-        bool bookTable(Customer* c);
-        bool bookTable(Customer* c, DateTime dt);
-
-        void freeTable();
-        void displayTable() const;
+private:
+    int tableID;
+    int capacity;
+    bool isBooked;
+    Customer* bookedBy; // Con trỏ liên kết đến đối tượng khách đặt
+    DateTime bookTime;
+public:
+    Table(int id = 0, int cap = 0);
+    ~Table();
+    int getTableID() const;
+    int getCapacity() const;
+    bool getStatus() const;
+    Customer* getCustomer() const;
+    bool bookTable(Customer* c);
+    bool bookTable(Customer* c, DateTime dt); // Nạp chồng hàm đặt bàn kèm thời gian
+    void freeTable();
+    void displayTable() const;
 };
 
-// ==========================================
-// 5. LỚP QUẢN LÝ NHÀ HÀNG (CORE MANAGER)
-// ==========================================
+// ================================ LỚP ĐIỀU PHỐI RESTAURANT MANAGER (SINGLETON) ================================
 class RestaurantManager {
-    private:
-        Table* tables;
-        int totalTables;
-        
-        // Sơ đồ chỗ ngồi
-        static const int ROWS = 5;
-        static const int COLS = 5;
-        int floorPlan[ROWS][COLS];
+private:
+    int totalTables;
+    Table* tables;                  // Mảng động chứa danh sách các bàn ăn
+    int floorPlan[ROWS][COLS];      // Ma trận sơ đồ vị trí nhà hàng
+    static RestaurantManager* instance; // Thực thể tĩnh duy nhất của Singleton
+
+    // Đóng kín Constructor để ngăn chặn việc tạo đối tượng tự do bên ngoài
+    RestaurantManager(int numTables);
+public:
+    ~RestaurantManager();
+    // Phương thức tĩnh duy nhất để lấy con trỏ truy cập thực thể bộ quản lý
+    static RestaurantManager* getInstance(int numTables = 13);
     
-    public:
-        RestaurantManager(int numTables);
-        ~RestaurantManager();
-    
-        void displayFloorPlan();
-        void addReservation();    // CHỨC NĂNG: THÊM
-        void deleteReservation(); // CHỨC NNG: XÓA
-        void editReservation();   // CHỨC NĂNG: SỬA
-        void displayAllTables();
-        void saveToFile(const string& filename); // FILE I/O
+    void displayFloorPlan();
+    void displayAllTables();
+    void addReservation();
+    void deleteReservation();
+    void customerDeleteReservation(); // Tính năng bảo mật hủy bàn của khách
+    void editReservation();
+    void saveToFile(const std::string& filename);
 };
 
-#endif // RESTAURANT_H
+// ================================ CÁC NGUYÊN MẪU HÀM GIAO DIỆN (INTERFACES) ================================
+void sendFeedback();
+void managerInterface(RestaurantManager* res, HRManager& hr);
+void employeeInterface(RestaurantManager* res);
+void customerInterface(RestaurantManager* res);
+
+#endif // PBL_H
