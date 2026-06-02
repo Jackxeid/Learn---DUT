@@ -43,6 +43,44 @@ int Customer::getTotalCustomers() { return totalCustomers; }
 
 
 
+// ================================ ĐỊNH NGHĨA LỚP EMPLOYEE ================================
+Employee::Employee(string id, string n, string p, string r, double salary, int s) : Person(n, p), empID(id), role(r), baseSalary(salary), shifts(s) {}
+// -----------------------------------------------------------------
+Employee::~Employee() {}
+// -----------------------------------------------------------------
+void Employee::displayInfo() const {
+        string empID;
+        string role; // "Manager" hoặc "Staff"
+        double baseSalary;
+        int shifts;
+    cout << left << "ID: " << setw(4) << empID 
+    << " | Tên: " << setw(15) << name 
+    << " | SDT: " << setw(15) << phone
+    << " | Vai trò: " << setw(10) << role
+    << " | Lương cơ bản: " << setw(15) << baseSalary;
+}
+void Employee::addShift() { shifts++; };
+// -----------------------------------------------------------------
+void Employee::updateSalary(double newSalary) { baseSalary = newSalary; };
+// -----------------------------------------------------------------
+double Employee::calculatePay() const {
+    double total = baseSalary * shifts;
+    if (role == "Manager") total *= 1.5; // Phụ cấp quản lý
+    return total;
+}
+// -----------------------------------------------------------------
+void Employee::displayEmployee() const {
+    cout << left << setw(10) << empID << setw(20) << name 
+        << setw(15) << role << setw(15) << baseSalary 
+        << setw(10) << shifts << endl;
+}
+// -----------------------------------------------------------------
+        // Format chuỗi để ghi vào file
+string Employee::toFileString() const {
+    return empID + "|" + name + "|" + role + "|" + to_string(baseSalary) + "|" + to_string(shifts);
+}
+
+
 // ================================ ĐỊNH NGHĨA LỚP TABLE ================================
 Table::Table(int id, int cap) : tableID(id), capacity(cap), isBooked(false), bookedBy(nullptr) {}
 // -----------------------------------------------------------------
