@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+using namespace std;
 
 // ================================ CẤU HÌNH HẰNG SỐ HỆ THỐNG ================================
 const int ROWS = 5; // Số hàng của sơ đồ nhà hàng
@@ -20,13 +21,13 @@ struct DateTime {
 // ================================ LỚP CƠ SỞ PERSON ================================
 class Person {
 protected:
-    std::string name;
-    std::string phone;
+    string name;
+    string phone;
 public:
-    Person(std::string n = "", std::string p = "");
+    Person(string n = "", string p = "");
     virtual ~Person();
-    std::string getName() const;
-    std::string getPhone() const;
+    string getName() const;
+    string getPhone() const;
 };
 
 // ================================ LỚP CON CUSTOMER ================================
@@ -35,27 +36,27 @@ private:
     int customerID;
     static int totalCustomers; // Biến tĩnh đếm tổng số khách hàng
 public:
-    Customer(std::string n = "", std::string p = "");
+    Customer(string n = "", string p = "");
     virtual ~Customer();
     void displayInfo() const;
     int getID() const;
-    void updateInfo(std::string n, std::string p);
+    void updateInfo(string n, string p);
     static int getTotalCustomers();
 };
 
 // ================================ LỚP CON EMPLOYEE ================================
 class Employee : public Person {
 private:
-    std::string empID;
-    std::string role; // "Manager" hoặc "Staff"
+    string empID;
+    string role; // "Manager" hoặc "Staff"
     double baseSalary;
     int shifts;
 public:
-    Employee(std::string id = "", std::string n = "", std::string p = "", std::string r = "Staff", double salary = 0, int s = 0);
+    Employee(string id = "", string n = "", string p = "", string r = "Staff", double salary = 0, int s = 0);
     virtual ~Employee();
 
-    std::string getID() const;
-    std::string getRole() const;
+    string getID() const;
+    string getRole() const;
     double getBaseSalary() const;
     int getShifts() const;
 
@@ -63,16 +64,16 @@ public:
     void updateSalary(double newSalary);
     double calculatePay() const;
     void displayEmployee() const;
-    std::string toFileString() const;
+    string toFileString() const;
 };
 
-// ================================ LỚP MODULE HRMANAGER ================================
+// ================================ LỚP HRMANAGER ================================
 class HRManager {
 private:
-    std::vector<Employee*> staffList; // Mảng động đa hình quản lý danh sách nhân sự
-    const std::string EMP_FILE = "employees.txt";
-    const std::string PAYROLL_FILE = "payroll_report.txt";
-    std::string trim(const std::string& str); // Hàm chuẩn hóa chuỗi đọc từ file
+    vector<Employee*> staffList; // Mảng động đa hình quản lý danh sách nhân sự
+    const string EMP_FILE = "employees.txt";
+    const string PAYROLL_FILE = "payroll_report.txt";
+    string trim(const string& str); // Hàm chuẩn hóa chuỗi
 public:
     HRManager();
     ~HRManager();
@@ -80,7 +81,7 @@ public:
     void saveEmployees();
     void exportPayroll();
     void displayAllStaff();
-    std::string authenticate(std::string empID);
+    string authenticate(string empID);
     
     // Các tính năng mở rộng phân quyền Admin
     void addEmployee();
@@ -131,7 +132,7 @@ public:
     void deleteReservation();
     void customerDeleteReservation(); // Tính năng bảo mật hủy bàn của khách
     void editReservation();
-    void saveToFile(const std::string& filename);
+    void saveToFile(const string& filename);
 };
 
 // ================================ CÁC NGUYÊN MẪU HÀM GIAO DIỆN (INTERFACES) ================================

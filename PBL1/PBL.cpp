@@ -62,7 +62,7 @@ void Employee::updateSalary(double newSalary) { baseSalary = newSalary; }
 // -----------------------------------------------------------------
 double Employee::calculatePay() const {
     double total = baseSalary * shifts;
-    if (role == "Manager") total += 1000000; // Phụ cấp trách nhiệm của Quản lý
+    if (role == "Manager") total *= 1.5; // Phụ cấp trách nhiệm của Quản lý
     return total;
 }
 // -----------------------------------------------------------------
@@ -73,7 +73,6 @@ void Employee::displayEmployee() const {
 }
 // -----------------------------------------------------------------
 string Employee::toFileString() const {
-    // Sửa lỗi logic: Thêm thuộc tính phone vào chuỗi ghi file để khớp dữ liệu khi đọc (load)
     return empID + "|" + name + "|" + phone + "|" + role + "|" + to_string(baseSalary) + "|" + to_string(shifts);
 }
 
@@ -83,22 +82,22 @@ string Employee::toFileString() const {
 HRManager::HRManager() {
     loadEmployees(); // Tự động nạp dữ liệu ngay khi đối tượng quản lý được tạo
 }
-
+// -----------------------------------------------------------------
 HRManager::~HRManager() {
-    // Giải phóng bộ nhớ mảng con trỏ động chống tràn bộ nhớ (Memory Leak)
+    // Giải phóng bộ nhớ mảng con trỏ động
     for (auto emp : staffList) {
         delete emp;
     }
     staffList.clear();
 }
-
+// -----------------------------------------------------------------
 string HRManager::trim(const string& str) {
     size_t first = str.find_first_not_of(' ');
     if (string::npos == first) return str;
     size_t last = str.find_last_not_of(' ');
     return str.substr(first, (last - first + 1));
 }
-
+// -----------------------------------------------------------------
 void HRManager::loadEmployees() {
     ifstream inFile(EMP_FILE);
     if (!inFile) {
@@ -128,7 +127,7 @@ void HRManager::loadEmployees() {
     }
     inFile.close();
 }
-
+// -----------------------------------------------------------------
 void HRManager::saveEmployees() {
     ofstream outFile(EMP_FILE);
     for (auto emp : staffList) {
@@ -137,7 +136,7 @@ void HRManager::saveEmployees() {
     outFile.close();
     cout << "=> Da dong bo hoa va ghi lai toan bo du lieu vao " << EMP_FILE << "!\n";
 }
-
+// -----------------------------------------------------------------
 void HRManager::exportPayroll() {
     ofstream outFile(PAYROLL_FILE);
     if (!outFile) {
@@ -161,7 +160,7 @@ void HRManager::exportPayroll() {
     outFile.close();
     cout << "=> Da xuat file " << PAYROLL_FILE << " thanh cong!\n";
 }
-
+// -----------------------------------------------------------------
 void HRManager::displayAllStaff() {
     cout << "\n-------------------------------------------------------------\n";
     cout << left << setw(10) << "Ma NV" << setw(20) << "Ten Nhan Vien" 
@@ -170,7 +169,7 @@ void HRManager::displayAllStaff() {
     for (auto emp : staffList) emp->displayEmployee();
     cout << "-------------------------------------------------------------\n";
 }
-
+// -----------------------------------------------------------------
 string HRManager::authenticate(string empID) {
     for (auto emp : staffList) {
         if (emp->getID() == empID) {
@@ -179,7 +178,7 @@ string HRManager::authenticate(string empID) {
     }
     return "None";
 }
-
+// -----------------------------------------------------------------
 // CHỨC NĂNG PHÁT TRIỂN THÊM CỦA QUẢN LÝ (Ý TƯỞNG THÊM MỚI NHÂN VIÊN)
 void HRManager::addEmployee() {
     string id, name, phone, role;
@@ -198,7 +197,7 @@ void HRManager::addEmployee() {
     staffList.push_back(new Employee(id, name, phone, role, salary, 0));
     cout << "=> THEM NHAN VIEN THANH CONG!\n";
 }
-
+// -----------------------------------------------------------------
 // CHỨC NĂNG SA THẢI NHÂN VIÊN
 void HRManager::removeEmployee() {
     string id;
@@ -214,7 +213,7 @@ void HRManager::removeEmployee() {
     }
     cout << "[Error] Khong tim thay Ma nhan vien hop le!\n";
 }
-
+// -----------------------------------------------------------------
 // CHỨC NĂNG TĂNG LƯƠNG HOẶC CHẤM CÔNG NHÂN VIÊN
 void HRManager::manageSalaryAndShifts() {
     string id;
@@ -238,7 +237,7 @@ void HRManager::manageSalaryAndShifts() {
     }
     cout << "[Error] Khong tim thay Ma nhan vien!\n";
 }
-
+// -----------------------------------------------------------------
 // CHỨC NĂNG XEM FEEDBACK CỦA KHÁCH HÀNG TỪ FILE
 void HRManager::viewFeedbacks() {
     ifstream inFile("feedback.txt");
