@@ -453,7 +453,8 @@ void RestaurantManager::customerDeleteReservation() {
         cout << "[Lỗi] Bàn trống hoặc ID không tồn tại!\n"; return;
     }
     cout << "Nhập số điện thoại đã dùng để đặt bàn: "; cin >> inputPhone;
-    cin.ignore(); // Clear the input buffer
+    cin.ignore();
+
     // Đối chiếu chuỗi số điện thoại bảo mật
     if (tables[tableID - 1].getCustomer()->getPhone() == inputPhone) {
         tables[tableID - 1].freeTable();
@@ -591,7 +592,7 @@ void customerInterface(RestaurantManager* res) {
         cout << "         CỔNG THÔNG TIN KHÁCH HÀNG       \n";
         cout << "=========================================\n";
         cout << "1. Xem sơ đồ vị trí bàn trống\n";
-        cout << "2. Quét danh sách sức chứa các bàn\n";
+        cout << "2. Quét dasnh sách sức chứa các bàn\n";
         cout << "3. Thực hiện Đặt bàn trực tuyến\n";
         cout << "4. Yêu cầu hủy đặt bàn (Bảo mật SĐT)\n";
         cout << "5. Gửi đánh giá dịch vụ & Feedback đóng góp\n";
