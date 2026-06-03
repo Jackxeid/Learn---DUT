@@ -160,16 +160,11 @@ void HRManager::saveEmployees() {
         return;
     }
 
-    cout << "[DEBUG] Dang tien hanh ghi " << staffList.size() << " nhan vien vao file...\n";
-    for (auto emp : staffList) {
-        outFile << emp->toFileString() << "\n";
-    }
-
     // Kiểm tra path file output
-    // char absPath[4096];
-    // if (_fullpath(absPath, EMP_FILE.c_str(), 4096) != NULL) {
-    //     cout << "[CHECK] File cua ban thuc te dang nam tai: " << absPath << "\n";
-    // }
+    char absPath[4096];
+    if (_fullpath(absPath, EMP_FILE.c_str(), 4096) != NULL) {
+        cout << "[CHECK] File cua ban thuc te dang nam tai: " << absPath << "\n";
+    }
 
     outFile.close();
     cout << "=> Da dong bo hoa va ghi lai toan bo du lieu vao " << EMP_FILE << "!\n";
@@ -658,7 +653,7 @@ int main() {
 
     // Đồng bộ, lưu trữ toàn bộ tiến trình nhân sự và đóng tiến trình an toàn
     hrSystem.saveEmployees();
-    bkRestaurant->saveToFile("Data.txt");
+    bkRestaurant->saveToFile(DATA_FILE);
     
     // Giải phóng thực thể Singleton trước khi tắt hẳn ứng dụng
     delete bkRestaurant;

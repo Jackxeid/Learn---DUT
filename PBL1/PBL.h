@@ -5,9 +5,19 @@
 #include <vector>
 using namespace std;
 
-// ================================ CẤU HÌNH HẰNG SỐ HỆ THỐNG ================================
+
+// ================================ PATH FILE I/O ================================
+const string EMP_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\employees.txt";
+const string PAYROLL_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\payroll_report.txt";
+const string DATA_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\Data.txt";
+
+
+
+// ================================ SƠ ĐỒ NHÀ HÀNG ================================
 const int ROWS = 5; // Số hàng của sơ đồ nhà hàng
 const int COLS = 5; // Số cột của sơ đồ nhà hàng
+
+
 
 // Cấu trúc thời gian hỗ trợ tính năng đặt lịch nâng cao
 struct DateTime {
@@ -17,6 +27,8 @@ struct DateTime {
     int month = 1;
     int year = 2026;
 };
+
+
 
 // ================================ LỚP CƠ SỞ PERSON ================================
 class Person {
@@ -29,6 +41,8 @@ public:
     string getName() const;
     string getPhone() const;
 };
+
+
 
 // ================================ LỚP CON CUSTOMER ================================
 class Customer : public Person {
@@ -43,6 +57,8 @@ public:
     void updateInfo(string n, string p);
     static int getTotalCustomers();
 };
+
+
 
 // ================================ LỚP CON EMPLOYEE ================================
 class Employee : public Person {
@@ -67,12 +83,12 @@ public:
     string toFileString() const;
 };
 
+
+
 // ================================ LỚP HRMANAGER ================================
 class HRManager {
 private:
     vector<Employee*> staffList; // Mảng động đa hình quản lý danh sách nhân sự
-    const string EMP_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\employees.txt";
-    const string PAYROLL_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\payroll_report.txt";
     string trim(const string& str); // Hàm chuẩn hóa chuỗi
 public:
     HRManager();
@@ -89,6 +105,8 @@ public:
     void manageSalaryAndShifts();
     void viewFeedbacks();
 };
+
+
 
 // ================================ LỚP ĐỐI TƯỢNG TABLE ================================
 class Table {
@@ -110,6 +128,8 @@ public:
     void freeTable();
     void displayTable() const;
 };
+
+
 
 // ================================ LỚP ĐIỀU PHỐI RESTAURANT MANAGER (SINGLETON) ================================
 class RestaurantManager {
@@ -134,6 +154,8 @@ public:
     void editReservation();
     void saveToFile(const string& filename);
 };
+
+
 
 // ================================ CÁC NGUYÊN MẪU HÀM GIAO DIỆN (INTERFACES) ================================
 void sendFeedback();
