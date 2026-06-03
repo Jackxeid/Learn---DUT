@@ -8,70 +8,96 @@ using namespace std;
 
 // ================================ KHỞI TẠO THÀNH VIÊN TĨNH & SINGLETON ================================
 int Customer::totalCustomers = 0;
-RestaurantManager* RestaurantManager::instance = nullptr; // Khởi tạo con trỏ cụm Singleton
+RestaurantManager* RestaurantManager::instance = nullptr;
 
 
 
 // ================================ ĐỊNH NGHĨA LỚP PERSON ================================
+// HÀM TẠO
 Person::Person(string n, string p) : name(n), phone(p) {}
 // -----------------------------------------------------------------
+// HÀM HỦY
 Person::~Person() {}
 // -----------------------------------------------------------------
+// TRẢ TÊN
 string Person::getName() const { return name; }
 // -----------------------------------------------------------------
+// TRẢ SỐ ĐIỆN THOẠI
 string Person::getPhone() const { return phone; }
 // -----------------------------------------------------------------
 
 
 
 // ================================ ĐỊNH NGHĨA LỚP CUSTOMER ================================
+// HÀM TẠO
 Customer::Customer(string n, string p) : Person(n, p) {
     totalCustomers++;
     customerID = totalCustomers;
 }
 // -----------------------------------------------------------------
+// HÀM HỦY
 Customer::~Customer() {}
 // -----------------------------------------------------------------
+// XEM THÔNG TIN KHÁCH HÀNG
 void Customer::displayInfo() const {
     cout << left << setw(4) << customerID << " | Tên: " << setw(15) << name << " | SĐT: " << setw(15) << phone;
 }
+// -----------------------------------------------------------------
+// TRẢ ID KHÁCH HÀNG
 int Customer::getID() const { return customerID; }
 // -----------------------------------------------------------------
+// CẬP NHẬT THÔNG TIN KHÁCH HÀNG
 void Customer::updateInfo(string n, string p) {
     name = n;
     phone = p;
 }
 // -----------------------------------------------------------------
+// TRẢ TỔNG SỐ KHÁCH HÀNG
 int Customer::getTotalCustomers() { return totalCustomers; }
 
 
 
 // ================================ ĐỊNH NGHĨA LỚP EMPLOYEE ================================
+// HÀM TẠO
 Employee::Employee(string id, string n, string p, string r, double salary, int s) 
     : Person(n, p), empID(id), role(r), baseSalary(salary), shifts(s) {}
 // -----------------------------------------------------------------
+// HÀM HỦY
 Employee::~Employee() {}
 // -----------------------------------------------------------------
+// TRẢ ID NHÂN VIÊN
 string Employee::getID() const { return empID; }
+// -----------------------------------------------------------------
+// TRẢ VAI TRÒ NHÂN VIÊN
 string Employee::getRole() const { return role; }
+// -----------------------------------------------------------------
+// TRẢ MỨC LƯƠNG CƠ BẢN
 double Employee::getBaseSalary() const { return baseSalary; }
+// -----------------------------------------------------------------
+// TRẢ SỐ CA
 int Employee::getShifts() const { return shifts; }
 // -----------------------------------------------------------------
+// TĂNG SỐ CA
 void Employee::addShift() { shifts++; }
+// -----------------------------------------------------------------
+// CẬP NHẬT LƯƠNG MỚI
 void Employee::updateSalary(double newSalary) { baseSalary = newSalary; }
 // -----------------------------------------------------------------
+// TÍNH LƯƠNG THỰC NHẬN
 double Employee::calculatePay() const {
     double total = baseSalary * shifts;
-    if (role == "Manager") total *= 1.5; // Phụ cấp trách nhiệm của Quản lý
+    if (role == "Manager") total *= 1.5; // Phụ cấp cho quản lý
     return total;
 }
 // -----------------------------------------------------------------
+// CHỨC NĂNG XEM THÔNG TIN NHÂN VIÊN
 void Employee::displayEmployee() const {
     cout << left << setw(10) << empID << setw(20) << name 
         << setw(15) << role << setw(15) << fixed << setprecision(0) << baseSalary 
         << setw(10) << shifts << endl;
 }
 // -----------------------------------------------------------------
+// XUẤT DỮ LIỆU NHÂN VIÊN
 string Employee::toFileString() const {
     return empID + "|" + name + "|" + phone + "|" + role + "|" + to_string(baseSalary) + "|" + to_string(shifts);
 }
@@ -79,10 +105,12 @@ string Employee::toFileString() const {
 
 
 // ================================ ĐỊNH NGHĨA LỚP HRMANAGER ================================
+// HÀM TẠO
 HRManager::HRManager() {
     loadEmployees(); // Tự động nạp dữ liệu ngay khi đối tượng quản lý được tạo
 }
 // -----------------------------------------------------------------
+// HÀM HỦY
 HRManager::~HRManager() {
     // Giải phóng bộ nhớ mảng con trỏ động
     for (auto emp : staffList) {
@@ -91,6 +119,7 @@ HRManager::~HRManager() {
     staffList.clear();
 }
 // -----------------------------------------------------------------
+// CHUẨN HÓA DỮ LIỆU
 string HRManager::trim(const string& str) {
     size_t first = str.find_first_not_of(' ');
     if (string::npos == first) return str;
@@ -98,6 +127,7 @@ string HRManager::trim(const string& str) {
     return str.substr(first, (last - first + 1));
 }
 // -----------------------------------------------------------------
+// CHẠY LẦN ĐẦU: DỮ LIỆU MẪU MẶC ĐỊNH CHO NHÂN SỰ
 void HRManager::noEmployee() {
     // Nap mảng mac dinh theo yeu cau (Ma NV, Ten, SDT, Vai tro, Luong/ca, So ca mac dinh)
     staffList.push_back(new Employee("NV01", "Ngo Nguyen Khang", "123456789", "Manager", 500000, 10));
@@ -107,6 +137,7 @@ void HRManager::noEmployee() {
     staffList.push_back(new Employee("NV05", "Ha Huy An", "123456789", "Staff", 200000, 10));
 }
 // -----------------------------------------------------------------
+// LOAD THÔNG TIN NHÂN VIÊN
 void HRManager::loadEmployees() {
     ifstream inFile(EMP_FILE);
     
@@ -151,6 +182,7 @@ void HRManager::loadEmployees() {
     }
 }
 // -----------------------------------------------------------------
+// LƯU THÔNG TIN NHÂN VIÊN
 void HRManager::saveEmployees() {
     ofstream outFile(EMP_FILE);
     
@@ -172,6 +204,7 @@ void HRManager::saveEmployees() {
     outFile.close();
 }
 // -----------------------------------------------------------------
+// XUẤT FILE LƯƠNG NHÂN VIÊN
 void HRManager::exportPayroll() {
     ofstream outFile(PAYROLL_FILE);
     if (!outFile) {
@@ -196,6 +229,7 @@ void HRManager::exportPayroll() {
     cout << "=> Da xuat file " << PAYROLL_FILE << " thanh cong!\n";
 }
 // -----------------------------------------------------------------
+// XEM THÔNG TIN TẤT CẢ NHÂN VIÊN
 void HRManager::displayAllStaff() {
     cout << "\n-------------------------------------------------------------\n";
     cout << left << setw(10) << "Ma NV" << setw(20) << "Ten Nhan Vien" 
@@ -205,6 +239,7 @@ void HRManager::displayAllStaff() {
     cout << "-------------------------------------------------------------\n";
 }
 // -----------------------------------------------------------------
+// XEM ID LÀ NHÂN VIÊN HAY QUẢN LÝ
 string HRManager::authenticate(string empID) {
     for (auto emp : staffList) {
         if (emp->getID() == empID) {
@@ -214,7 +249,7 @@ string HRManager::authenticate(string empID) {
     return "None";
 }
 // -----------------------------------------------------------------
-// CHỨC NĂNG PHÁT TRIỂN THÊM CỦA QUẢN LÝ (Ý TƯỞNG THÊM MỚI NHÂN VIÊN)
+// THÊM NHÂN VIÊN
 void HRManager::addEmployee() {
     string id, name, phone, role;
     double salary;
@@ -238,7 +273,7 @@ void HRManager::addEmployee() {
     cout << "=> THEM NHAN VIEN THANH CONG!\n";
 }
 // -----------------------------------------------------------------
-// CHỨC NĂNG SA THẢI NHÂN VIÊN
+// SA THẢI NHÂN VIÊN
 void HRManager::removeEmployee() {
     string id;
     cout << "\n--- SA THAI NHAN VIEN ---\n";
@@ -254,7 +289,7 @@ void HRManager::removeEmployee() {
     cout << "[Error] Khong tim thay Ma nhan vien hop le!\n";
 }
 // -----------------------------------------------------------------
-// CHỨC NĂNG TĂNG LƯƠNG HOẶC CHẤM CÔNG NHÂN VIÊN
+// TĂNG LƯƠNG HOẶC CHẤM CÔNG NHÂN VIÊN
 void HRManager::manageSalaryAndShifts() {
     string id;
     int opt;
@@ -283,7 +318,7 @@ void HRManager::manageSalaryAndShifts() {
     cout << "[Error] Khong tim thay Ma nhan vien!\n";
 }
 // -----------------------------------------------------------------
-// CHỨC NĂNG XEM FEEDBACK CỦA KHÁCH HÀNG TỪ FILE
+// XEM FEEDBACK CỦA KHÁCH HÀNG
 void HRManager::viewFeedbacks() {
     ifstream inFile(FEEDBACK_FILE);
     cout << "\n=== DANH SACH PHAN HOI TU KHACH HANG ===\n";
@@ -300,22 +335,29 @@ void HRManager::viewFeedbacks() {
 
 
 // ================================ ĐỊNH NGHĨA LỚP TABLE ================================
+// HÀM TẠO
 Table::Table(int id, int cap) : tableID(id), capacity(cap), isBooked(false), bookedBy(nullptr) {}
 // -----------------------------------------------------------------
+// HÀM HỦY
 Table::~Table() {
     if (bookedBy != nullptr) {
         delete bookedBy;
     }
 }
 // -----------------------------------------------------------------
+// TRẢ ID BÀN
 int Table::getTableID() const { return tableID; }
 // -----------------------------------------------------------------
+// TRẢ SỨC CHỨA BÀN
 int Table::getCapacity() const { return capacity; }
 // -----------------------------------------------------------------
+// TRẢ TRẠNG THÁI BÀN
 bool Table::getStatus() const { return isBooked; }
 // -----------------------------------------------------------------
+// TRẢ KHÁCH HÀNG ĐẶT BÀN
 Customer* Table::getCustomer() const { return bookedBy; }
 // -----------------------------------------------------------------
+// CHỨC NĂNG ĐẶT BÀN
 bool Table::bookTable(Customer* c) {
     if (isBooked){
         return false;
@@ -326,6 +368,7 @@ bool Table::bookTable(Customer* c) {
     return true;
 }
 // -----------------------------------------------------------------
+// CHỨC NĂNG ĐẶT BÀN KÈM THỜI GIAN
 bool Table::bookTable(Customer* c, DateTime dt) {
     if (isBooked) {
         return false;
@@ -336,6 +379,7 @@ bool Table::bookTable(Customer* c, DateTime dt) {
     return true;
 }
 // -----------------------------------------------------------------
+// CHỨC NĂNG HỦY BÀN
 void Table::freeTable() {
     if (isBooked) {
         delete bookedBy;
@@ -344,6 +388,7 @@ void Table::freeTable() {
         }
 }
 // -----------------------------------------------------------------
+// TRẠNG THÁI TẤT CẢ BÀN
 void Table::displayTable() const {
     cout << "Bàn số: " << setw(3) << tableID << " | Chỗ ngồi: " << setw(3) << capacity 
                 << " | Trạng thái: " << (isBooked ? "Đã Đặt" : "Trống") << endl;
@@ -357,14 +402,15 @@ void Table::displayTable() const {
 
 
 // ================================ ĐỊNH NGHĨA LỚP RESTAURANT MANAGER (SINGLETON PATTERN) ================================
-// Thực thi hàm Singleton getInstance()
+// Singleton getInstance()
 RestaurantManager* RestaurantManager::getInstance(int numTables) {
     if (instance == nullptr) {
         instance = new RestaurantManager(numTables);
     }
     return instance;
 }
-
+// -----------------------------------------------------------------
+// SỐ BÀN ĂN TRONG NHÀ HÀNG
 RestaurantManager::RestaurantManager(int numTables) {
     totalTables = numTables;
     tables = new Table[totalTables];
@@ -384,10 +430,12 @@ RestaurantManager::RestaurantManager(int numTables) {
     }
 }
 // -----------------------------------------------------------------
+// HÀM HỦY
 RestaurantManager::~RestaurantManager() {
     delete[] tables;
 }
 // -----------------------------------------------------------------
+// SƠ ĐỒ NHÀ HÀNG
 void RestaurantManager::displayFloorPlan() {
     cout << "\n=== SƠ ĐỒ NHÀ HÀNG ===\n";
     for (int i = 0; i < ROWS; i++) {
@@ -403,11 +451,13 @@ void RestaurantManager::displayFloorPlan() {
     }
 }
 // -----------------------------------------------------------------
+// TRẠNG THÁI BÀN
 void RestaurantManager::displayAllTables() {
     cout << "\n=== DANH SÁCH TẤT CẢ CÁC BÀN ===\n";
     for (int i = 0; i < totalTables; i++) tables[i].displayTable();
 }
 // -----------------------------------------------------------------
+// ĐẶT BÀN
 void RestaurantManager::addReservation() {
     int tableID;
     string name, phone;
@@ -430,6 +480,7 @@ void RestaurantManager::addReservation() {
     cout << "=> ĐẶT BÀN THÀNH CÔNG!\n";
 }
 // -----------------------------------------------------------------
+// HỦY ĐẶT BÀN (CHO QUẢN LÝ)
 void RestaurantManager::deleteReservation() {
     int tableID;
     cout << "\n--- HỦY ĐẶT BÀN ---" << endl;
@@ -441,8 +492,8 @@ void RestaurantManager::deleteReservation() {
     tables[tableID - 1].freeTable();
     cout << "=> HỦY ĐẶT BÀN THÀNH CÔNG!\n";
 }
-
-// CHỨC NĂNG PHÁT TRIỂN THÊM: HỦY ĐẶT BÀN BẢO MẬT (DÀNH CHO KHÁCH HÀNG)
+// -----------------------------------------------------------------
+// HỦY ĐẶT BÀN (CHO KHÁCH HÀNG)
 void RestaurantManager::customerDeleteReservation() {
     int tableID;
     string inputPhone;
@@ -463,8 +514,8 @@ void RestaurantManager::customerDeleteReservation() {
         cout << "[Từ chối hành động] Số điện thoại không trùng khớp với dữ liệu đặt bàn!\n";
     }
 }
-
 // -----------------------------------------------------------------
+// CHỈNH SỬA THÔNG TIN ĐẶT BÀN
 void RestaurantManager::editReservation() {
     int tableID;
     cout << "\n--- SỬA THÔNG TIN ĐẶT BÀN ---" << endl;
@@ -481,6 +532,7 @@ void RestaurantManager::editReservation() {
     cout << "=> CẬP NHẬT THÔNG TIN THÀNH CÔNG!\n";
 }
 // -----------------------------------------------------------------
+// LƯU DỮ LIỆU KHÁCH HÀNG
 void RestaurantManager::saveToFile(const string& filename) {
     ofstream outFile(filename);
     if (!outFile) return;
@@ -494,8 +546,8 @@ void RestaurantManager::saveToFile(const string& filename) {
     outFile.close();
     cout << "=> ĐÃ LƯU DỮ LIỆU ĐẶT BÀN KHÁCH HÀNG!\n";
 }
-
-// CHỨC NĂNG THÊM MỚI: KHÁCH HÀNG GỬI PHẢN HỒI (FEEDBACK)
+// -----------------------------------------------------------------
+// KHÁCH HÀNG FEEDBACK
 void sendFeedback() {
     string msg;
     cin.ignore();
@@ -511,8 +563,9 @@ void sendFeedback() {
 
 
 
-// ================================ HỆ THỐNG MENU PHÂN QUYỀN (ROUTING GIAO DIỆN) ================================
-
+// ================================ HỆ THỐNG MENU PHÂN QUYỀN ================================
+// -----------------------------------------------------------------
+// QUẢN LÝ
 void managerInterface(RestaurantManager* res, HRManager& hr) {
     int choice;
     do {
@@ -554,7 +607,8 @@ void managerInterface(RestaurantManager* res, HRManager& hr) {
         if(choice != 0) cout << "\n#######################################################\n";
     } while (choice != 0);
 }
-
+// -----------------------------------------------------------------
+// NHÂN VIÊN
 void employeeInterface(RestaurantManager* res) {
     int choice;
     do {
@@ -584,7 +638,8 @@ void employeeInterface(RestaurantManager* res) {
         if(choice != 0) cout << "\n#######################################################\n";
     } while (choice != 0);
 }
-
+// -----------------------------------------------------------------
+// KHÁCH HÀNG
 void customerInterface(RestaurantManager* res) {
     int choice;
     do {
@@ -617,10 +672,8 @@ void customerInterface(RestaurantManager* res) {
 
 // ================================ HÀM ĐIỀU HƯỚNG MAIN (GATEWAY TRUNG TÂM) ================================
 int main() {
-    // 1. Áp dụng Singleton Pattern để khởi tạo thực thể bàn ăn duy nhất cho toàn hệ thống
     RestaurantManager* bkRestaurant = RestaurantManager::getInstance(13);
     
-    // 2. Khởi tạo đối tượng quản lý tệp nhân sự
     HRManager hrSystem; 
     
     int accessRole;
@@ -664,11 +717,9 @@ int main() {
         cout << "\n#######################################################\n";
     } while (accessRole != 0);
 
-    // Đồng bộ, lưu trữ toàn bộ tiến trình nhân sự và đóng tiến trình an toàn
     hrSystem.saveEmployees();
     bkRestaurant->saveToFile(DATA_FILE);
     
-    // Giải phóng thực thể Singleton trước khi tắt hẳn ứng dụng
     delete bkRestaurant;
     
     cout << "=> HỆ THỐNG ĐÃ ĐỒNG BỘ DỮ LIỆU VÀ ĐÓNG CỬA AN TOÀN!\n";
