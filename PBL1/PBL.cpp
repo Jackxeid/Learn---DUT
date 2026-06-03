@@ -98,19 +98,23 @@ string HRManager::trim(const string& str) {
     return str.substr(first, (last - first + 1));
 }
 // -----------------------------------------------------------------
+void HRManager::noEmployee() {
+    // Nap mảng mac dinh theo yeu cau (Ma NV, Ten, SDT, Vai tro, Luong/ca, So ca mac dinh)
+    staffList.push_back(new Employee("NV01", "Ngo Nguyen Khang", "123456789", "Manager", 500000, 10));
+    staffList.push_back(new Employee("NV02", "Huynh Van Dat", "123456789", "Staff", 200000, 10));
+    staffList.push_back(new Employee("NV03", "Le Nguyen Quoc Huy", "123456789", "Staff", 200000, 10));
+    staffList.push_back(new Employee("NV04", "Le Anh Khoa", "123456789", "Staff", 200000, 10));
+    staffList.push_back(new Employee("NV05", "Ha Huy An", "123456789", "Staff", 200000, 10));
+}
+// -----------------------------------------------------------------
 void HRManager::loadEmployees() {
     ifstream inFile(EMP_FILE);
     
     // TRƯỜNG HỢP 1: File chưa từng tồn tại (Lần đầu chạy ứng dụng)
     if (!inFile) {
         cout << "[He thong] Khoi tao co so du lieu nhan su mac dinh ban dau...\n";
-        
-        // Nap mảng mac dinh theo yeu cau (Ma NV, Ten, SDT, Vai tro, Luong/ca, So ca mac dinh)
-        staffList.push_back(new Employee("NV01", "Ngo Nguyen Khang", "123456789", "Manager", 500000, 10));
-        staffList.push_back(new Employee("NV02", "Huynh Van Dat", "123456789", "Staff", 200000, 10));
-        staffList.push_back(new Employee("NV03", "Le Nguyen Quoc Huy", "123456789", "Staff", 200000, 10));
-        staffList.push_back(new Employee("NV04", "Le Anh Khoa", "123456789", "Staff", 200000, 10));
-        staffList.push_back(new Employee("NV05", "Ha Huy An", "123456789", "Staff", 200000, 10));
+        // Tạo dữ liệu mẫu mặc định
+        noEmployee();
         
         // Tu dong tao file va luu lai ngay lap tuc
         saveEmployees();
@@ -142,11 +146,7 @@ void HRManager::loadEmployees() {
     // TRƯỜNG HỢP 2: File ton tai nhung ai do da xoa het chuoi (File trong rong)
     if (staffList.empty()) {
         cout << "[He thong] File du lieu trong. Tu dong nap lai danh sach goc...\n";
-        staffList.push_back(new Employee("NV01", "Ngo Nguyen Khang", "123456789", "Manager", 500000, 10));
-        staffList.push_back(new Employee("NV02", "Huynh Van Dat", "123456789", "Staff", 200000, 10));
-        staffList.push_back(new Employee("NV03", "Le Nguyen Quoc Huy", "123456789", "Staff", 200000, 10));
-        staffList.push_back(new Employee("NV04", "Le Anh Khoa", "123456789", "Staff", 200000, 10));
-        staffList.push_back(new Employee("NV05", "Ha Huy An", "123456789", "Staff", 200000, 10));
+        noEmployee();
         saveEmployees();
     }
 }
@@ -160,14 +160,16 @@ void HRManager::saveEmployees() {
         return;
     }
 
-    // Kiểm tra path file output
-    char absPath[4096];
-    if (_fullpath(absPath, EMP_FILE.c_str(), 4096) != NULL) {
-        cout << "[CHECK] File cua ban thuc te dang nam tai: " << absPath << "\n";
+    // // Kiểm tra path file output
+    // char absPath[4096];
+    // if (_fullpath(absPath, EMP_FILE.c_str(), 4096) != NULL) {
+    //     cout << "[CHECK] File cua ban thuc te dang nam tai: " << absPath << "\n";
+    // }
+    for (auto emp : staffList) {
+        outFile << emp->toFileString() << endl;
     }
 
     outFile.close();
-    cout << "=> Da dong bo hoa va ghi lai toan bo du lieu vao " << EMP_FILE << "!\n";
 }
 // -----------------------------------------------------------------
 void HRManager::exportPayroll() {
@@ -219,12 +221,17 @@ void HRManager::addEmployee() {
     cout << "\n--- THEM NHAN VIEN MOI ---\n";
     cout << "Nhap Ma NV (VD: NV06): "; cin >> id;
     if (authenticate(id) != "None") {
-        cout << "[Error] Ma nhan vien da ton tai!\n"; return;
+        cout << "[Error] Ma nhan vien da ton tai!\n"; 
+        return;
     }
     cin.ignore();
     cout << "Ho va Ten: "; getline(cin, name);
     cout << "So dien thoai: "; getline(cin, phone);
     cout << "Vai tro (Manager/Staff): "; cin >> role;
+    if (role != "Manager" && role != "Staff") {
+        cout << "[Error] Vai tro khong hop le! Vui lòng chon 'Manager' hoac 'Staff'.\n"; 
+        return;
+    }
     cout << "Luong co ban moi ca: "; cin >> salary;
 
     staffList.push_back(new Employee(id, name, phone, role, salary, 0));
@@ -255,6 +262,7 @@ void HRManager::manageSalaryAndShifts() {
     cout << "Nhap Ma NV: "; cin >> id;
     for (auto emp : staffList) {
         if (emp->getID() == id) {
+            cout << "Tên nhân viên: "; cout << emp->getName() << endl;
             cout << "1. Diem danh tang 1 ca lam (Check-in)\n2. Cap nhat muc luong cung\nChon: "; 
             cin >> opt;
             if (opt == 1) {
@@ -266,6 +274,9 @@ void HRManager::manageSalaryAndShifts() {
                 emp->updateSalary(newSal);
                 cout << "=> Cap nhat muc luong moi thanh cong!\n";
             }
+            
+            exportPayroll();
+
             return;
         }
     }
@@ -274,7 +285,7 @@ void HRManager::manageSalaryAndShifts() {
 // -----------------------------------------------------------------
 // CHỨC NĂNG XEM FEEDBACK CỦA KHÁCH HÀNG TỪ FILE
 void HRManager::viewFeedbacks() {
-    ifstream inFile("feedback.txt");
+    ifstream inFile(FEEDBACK_FILE);
     cout << "\n=== DANH SACH PHAN HOI TU KHACH HANG ===\n";
     if (!inFile) {
         cout << "(Chua co phan hoi nao trong he thong)\n"; return;
@@ -385,7 +396,7 @@ void RestaurantManager::displayFloorPlan() {
             else {
                 int id = floorPlan[i][j] - 1;
                 if (tables[id].getStatus()) cout << "[ X ] ";
-                else cout << "[ " << setw(2) << floorPlan[i][j] << " ] ";
+                else cout << "[ " << floorPlan[i][j] << " ] ";
             }
         }
         cout << endl;
@@ -435,13 +446,14 @@ void RestaurantManager::deleteReservation() {
 void RestaurantManager::customerDeleteReservation() {
     int tableID;
     string inputPhone;
+    displayFloorPlan();
     cout << "\n--- KHÁCH HÀNG TỰ HỦY ĐẶT BÀN (YÊU CẦU XÁC THỰC CHÍNH CHỦ) ---\n";
     cout << "Nhập ID bàn muốn hủy: "; cin >> tableID;
     if (tableID < 1 || tableID > totalTables || !tables[tableID - 1].getStatus()) {
         cout << "[Lỗi] Bàn trống hoặc ID không tồn tại!\n"; return;
     }
     cout << "Nhập số điện thoại đã dùng để đặt bàn: "; cin >> inputPhone;
-    
+    cin.ignore(); // Clear the input buffer
     // Đối chiếu chuỗi số điện thoại bảo mật
     if (tables[tableID - 1].getCustomer()->getPhone() == inputPhone) {
         tables[tableID - 1].freeTable();
@@ -488,7 +500,7 @@ void sendFeedback() {
     cin.ignore();
     cout << "\nNhập ý kiến đóng góp của bạn về nhà hàng: ";
     getline(cin, msg);
-    ofstream outFile("feedback.txt", ios::app); // Mở ở chế độ Append ghi nối đuôi
+    ofstream outFile(FEEDBACK_FILE, ios::app); // Mở ở chế độ Append ghi nối đuôi
     if (outFile) {
         outFile << "- " << msg << "\n";
         outFile.close();
@@ -534,7 +546,7 @@ void managerInterface(RestaurantManager* res, HRManager& hr) {
             case 9: hr.manageSalaryAndShifts(); break;
             case 10: hr.viewFeedbacks(); break;
             case 11: hr.exportPayroll(); break;
-            case 12: res->saveToFile("Data.txt"); break;
+            case 12: res->saveToFile(DATA_FILE); break;
             case 0: cout << "=> Đang thoát tài khoản quản lý và đồng bộ file nhân sự...\n"; break;
             default: cout << "Lựa chọn không hợp lệ!\n";
         }
@@ -564,7 +576,7 @@ void employeeInterface(RestaurantManager* res) {
             case 3: res->addReservation(); break;
             case 4: res->editReservation(); break;
             case 5: res->deleteReservation(); break;
-            case 6: res->saveToFile("Data.txt"); break;
+            case 6: res->saveToFile(DATA_FILE); break;
             case 0: cout << "=> Đang đăng xuất tài khoản nhân viên...\n"; break;
             default: cout << "Lựa chọn không hợp lệ!\n";
         }
