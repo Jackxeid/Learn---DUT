@@ -153,9 +153,24 @@ void HRManager::loadEmployees() {
 // -----------------------------------------------------------------
 void HRManager::saveEmployees() {
     ofstream outFile(EMP_FILE);
+    
+    // Xem file có thực sự mở được không
+    if (!outFile) {
+        cout << "[ERROR] Khong the mo file " << EMP_FILE << " de ghi dữ liệu! Kiếm tra lại quyền truy cập!\n";
+        return;
+    }
+
+    cout << "[DEBUG] Dang tien hanh ghi " << staffList.size() << " nhan vien vao file...\n";
     for (auto emp : staffList) {
         outFile << emp->toFileString() << "\n";
     }
+
+    // Kiểm tra path file output
+    // char absPath[4096];
+    // if (_fullpath(absPath, EMP_FILE.c_str(), 4096) != NULL) {
+    //     cout << "[CHECK] File cua ban thuc te dang nam tai: " << absPath << "\n";
+    // }
+
     outFile.close();
     cout << "=> Da dong bo hoa va ghi lai toan bo du lieu vao " << EMP_FILE << "!\n";
 }

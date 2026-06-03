@@ -71,8 +71,8 @@ public:
 class HRManager {
 private:
     vector<Employee*> staffList; // Mảng động đa hình quản lý danh sách nhân sự
-    const string EMP_FILE = "employees.txt";
-    const string PAYROLL_FILE = "payroll_report.txt";
+    const string EMP_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\employees.txt";
+    const string PAYROLL_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\payroll_report.txt";
     string trim(const string& str); // Hàm chuẩn hóa chuỗi
 public:
     HRManager();
