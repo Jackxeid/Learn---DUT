@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <sstream> // Bổ sung thư viện xử lý chuỗi file dữ liệu
+#include <sstream>
 
 using namespace std;
 
@@ -78,7 +78,7 @@ string Employee::toFileString() const {
 
 
 
-// ================================ ĐỊNH NGHĨA LỚP HRMANAGER (QUẢN LÝ NHÂN SỰ) ================================
+// ================================ ĐỊNH NGHĨA LỚP HRMANAGER ================================
 HRManager::HRManager() {
     loadEmployees(); // Tự động nạp dữ liệu ngay khi đối tượng quản lý được tạo
 }
@@ -100,8 +100,20 @@ string HRManager::trim(const string& str) {
 // -----------------------------------------------------------------
 void HRManager::loadEmployees() {
     ifstream inFile(EMP_FILE);
+    
+    // TRƯỜNG HỢP 1: File chưa từng tồn tại (Lần đầu chạy ứng dụng)
     if (!inFile) {
-        cout << "[Canh bao] Khong tim thay file " << EMP_FILE << ". Bat dau voi danh sach trong.\n";
+        cout << "[He thong] Khoi tao co so du lieu nhan su mac dinh ban dau...\n";
+        
+        // Nap mảng mac dinh theo yeu cau (Ma NV, Ten, SDT, Vai tro, Luong/ca, So ca mac dinh)
+        staffList.push_back(new Employee("NV01", "Ngo Nguyen Khang", "123456789", "Manager", 500000, 10));
+        staffList.push_back(new Employee("NV02", "Huynh Van Dat", "123456789", "Staff", 200000, 10));
+        staffList.push_back(new Employee("NV03", "Le Nguyen Quoc Huy", "123456789", "Staff", 200000, 10));
+        staffList.push_back(new Employee("NV04", "Le Anh Khoa", "123456789", "Staff", 200000, 10));
+        staffList.push_back(new Employee("NV05", "Ha Huy An", "123456789", "Staff", 200000, 10));
+        
+        // Tu dong tao file va luu lai ngay lap tuc
+        saveEmployees();
         return;
     }
 
@@ -126,6 +138,17 @@ void HRManager::loadEmployees() {
         staffList.push_back(new Employee(trim(id), trim(name), trim(phone), trim(role), salary, shifts));
     }
     inFile.close();
+
+    // TRƯỜNG HỢP 2: File ton tai nhung ai do da xoa het chuoi (File trong rong)
+    if (staffList.empty()) {
+        cout << "[He thong] File du lieu trong. Tu dong nap lai danh sach goc...\n";
+        staffList.push_back(new Employee("NV01", "Ngo Nguyen Khang", "123456789", "Manager", 500000, 10));
+        staffList.push_back(new Employee("NV02", "Huynh Van Dat", "123456789", "Staff", 200000, 10));
+        staffList.push_back(new Employee("NV03", "Le Nguyen Quoc Huy", "123456789", "Staff", 200000, 10));
+        staffList.push_back(new Employee("NV04", "Le Anh Khoa", "123456789", "Staff", 200000, 10));
+        staffList.push_back(new Employee("NV05", "Ha Huy An", "123456789", "Staff", 200000, 10));
+        saveEmployees();
+    }
 }
 // -----------------------------------------------------------------
 void HRManager::saveEmployees() {
@@ -222,7 +245,8 @@ void HRManager::manageSalaryAndShifts() {
     cout << "Nhap Ma NV: "; cin >> id;
     for (auto emp : staffList) {
         if (emp->getID() == id) {
-            cout << "1. Diem danh tang 1 ca lam (Check-in)\n2. Cap nhat muc luong cung\nChon: "; cin >> opt;
+            cout << "1. Diem danh tang 1 ca lam (Check-in)\n2. Cap nhat muc luong cung\nChon: "; 
+            cin >> opt;
             if (opt == 1) {
                 emp->addShift();
                 cout << "=> Ghi nhan ca lam viec thanh cong!\n";
