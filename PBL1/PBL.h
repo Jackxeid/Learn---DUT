@@ -3,15 +3,16 @@
 
 #include <string>
 #include <vector>
-using namespace std;
-
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 // ================================ PATH FILE I/O ================================
-const string EMP_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\employees.txt";
-const string PAYROLL_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\payroll_report.txt";
-const string DATA_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\data.txt";
-const string FEEDBACK_FILE = "C:\\DUT\\Ki_2\\PBL 1\\PBL1\\feedback.txt";
-
+const std::string EMP_FILE = "employees.txt";
+const std::string PAYROLL_FILE = "payroll_report.txt";
+const std::string FEEDBACK_FILE = "feedback.txt";
+const std::string RESERVATION_FILE = "datban.txt";
+const std::string INVOICE_FILE = "hoadon.txt";
 
 
 // ================================ SƠ ĐỒ NHÀ HÀNG ================================
@@ -29,18 +30,29 @@ struct DateTime {
     int year = 2026;
 };
 
+struct MenuItem {
+    int id = 0;
+    std::string name;
+    double price = 0;
+};
+
+struct OrderItem {
+    MenuItem item;
+    int quantity = 0;
+};
+
 
 
 // ================================ LỚP CƠ SỞ PERSON ================================
 class Person {
     protected:
-        string name;
-        string phone;
+        std::string name;
+        std::string phone;
     public:
-        Person(string n = "", string p = "");
+        Person(std::string n = "", std::string p = "");
         virtual ~Person();
-        string getName() const;
-        string getPhone() const;
+        std::string getName() const;
+        std::string getPhone() const;
 };
 
 
@@ -51,11 +63,11 @@ class Customer : public Person {
         int customerID;
         static int totalCustomers; // Biến tĩnh đếm tổng số khách hàng
     public:
-        Customer(string n = "", string p = "");
+        Customer(std::string n = "", std::string p = "");
         virtual ~Customer();
         void displayInfo() const;
         int getID() const;
-        void updateInfo(string n, string p);
+        void updateInfo(std::string n, std::string p);
         static int getTotalCustomers();
 };
 
@@ -64,16 +76,16 @@ class Customer : public Person {
 // ================================ LỚP CON EMPLOYEE ================================
 class Employee : public Person {
     private:
-        string empID;
-        string role; // "Manager" hoặc "Staff"
+        std::string empID;
+        std::string role; // "Manager" hoặc "Staff"
         double baseSalary;
         int shifts;
     public:
-        Employee(string id = "", string n = "", string p = "", string r = "Staff", double salary = 0, int s = 0);
+        Employee(std::string id = "", std::string n = "", std::string p = "", std::string r = "Staff", double salary = 0, int s = 0);
         virtual ~Employee();
 
-        string getID() const;
-        string getRole() const;
+        std::string getID() const;
+        std::string getRole() const;
         double getBaseSalary() const;
         int getShifts() const;
 
@@ -81,7 +93,7 @@ class Employee : public Person {
         void updateSalary(double newSalary);
         double calculatePay() const;
         void displayEmployee() const;
-        string toFileString() const;
+        std::string toFileString() const;
 };
 
 
@@ -89,8 +101,8 @@ class Employee : public Person {
 // ================================ LỚP HRMANAGER ================================
 class HRManager {
     private:
-        vector<Employee*> staffList; // Mảng động đa hình quản lý danh sách nhân sự
-        string trim(const string& str); // Hàm chuẩn hóa chuỗi
+        std::vector<Employee*> staffList; // Mảng động đa hình quản lý danh sách nhân sự
+        std::string trim(const std::string& str); // Hàm chuẩn hóa chuỗi
     public:
         HRManager();
         ~HRManager();
@@ -99,7 +111,7 @@ class HRManager {
         void saveEmployees();
         void exportPayroll();
         void displayAllStaff();
-        string authenticate(string empID);
+        std::string authenticate(std::string empID);
 
         // Các tính năng mở rộng phân quyền Admin
         void addEmployee();
@@ -118,15 +130,21 @@ class Table {
         bool isBooked;
         Customer* bookedBy; // Con trỏ liên kết đến đối tượng khách đặt
         DateTime bookTime;
+        std::vector<OrderItem> orderList;
     public:
         Table(int id = 0, int cap = 0);
+        Table(const Table& other);
+        Table& operator=(const Table& other);
         ~Table();
         int getTableID() const;
         int getCapacity() const;
         bool getStatus() const;
         Customer* getCustomer() const;
+        DateTime getBookTime() const;
+        const std::vector<OrderItem>& getOrderList() const;
         bool bookTable(Customer* c);
         bool bookTable(Customer* c, DateTime dt); // Nạp chồng hàm đặt bàn kèm thời gian
+        void setOrderList(const std::vector<OrderItem>& orders);
         void freeTable();
         void displayTable() const;
 };
@@ -151,10 +169,14 @@ class RestaurantManager {
         void displayFloorPlan();
         void displayAllTables();
         void addReservation();
+        void addOnlineReservation();
         void deleteReservation();
+        void checkoutTable();
         void customerDeleteReservation(); // Tính năng bảo mật hủy bàn của khách
         void editReservation();
-        void saveToFile(const string& filename);
+        void exportReservationToFile(int tableID);
+        void saveReservationsToFile(const std::string& filename);
+        void loadReservationsFromFile(const std::string& filename);
 };
 
 
@@ -164,5 +186,4 @@ void sendFeedback();
 void managerInterface(RestaurantManager* res, HRManager& hr);
 void employeeInterface(RestaurantManager* res);
 void customerInterface(RestaurantManager* res);
-
 #endif // PBL_H

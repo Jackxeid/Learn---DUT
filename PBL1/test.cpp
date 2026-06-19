@@ -1,24 +1,20 @@
-#include <iostream>
-#include <fstream> // Cần thiết để làm việc với file
+#include "PBL.h"
 
-using namespace std;
+#include <fstream>
+#include <iostream>
 
 int main() {
-    // 1. Khởi tạo đối tượng ghi file
-    ofstream fileOut("output.txt");
+    std::ofstream fileOut("output.txt");
 
-    // 2. Kiểm tra xem file có mở thành công không
-    if (fileOut.is_open()) {
-        // 3. Ghi dữ liệu vào file txt
-        fileOut << "Xin chào! Đây là dòng đầu tiên." << endl;
-        fileOut << "Kết quả tính toán: " << 5 + 10 << endl;
-
-        // 4. Đóng file sau khi hoàn tất
-        fileOut.close();
-        cout << "Xuất file thành công!" << endl;
-    } else {
-        cout << "Không thể mở file để ghi!" << endl;
+    if (!fileOut.is_open()) {
+        std::cout << "Khong the mo file de ghi!\n";
+        return 1;
     }
 
+    fileOut << "Kiem tra ghi file thanh cong.\n";
+    fileOut << "File nhan vien dang dung: " << EMP_FILE << '\n';
+    fileOut << "File dat ban dang dung: " << DATA_FILE << '\n';
+
+    std::cout << "Xuat file thanh cong!\n";
     return 0;
 }
